@@ -12,3 +12,4 @@ jobs:
         username: 'Qsgs-Fans'
         reponame: 'FkCreator'
         token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+        useyarn: true
