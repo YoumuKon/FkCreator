@@ -4,22 +4,6 @@
 
     <div class="blockly-container">
       <div ref="blocklyDiv" style="height: 500px; width: 100%"></div>
-      <xml ref="toolbox" style="display: none">
-        <!-- 根据方法类型显示不同的块 -->
-        <category v-if="method.type === 'TypeA'" name="TypeA块" colour="210">
-          <block type="type_a_action1"></block>
-          <block type="type_a_action2"></block>
-        </category>
-        <category v-if="method.type === 'TypeB'" name="TypeB块" colour="230">
-          <block type="type_b_action1"></block>
-          <block type="type_b_action2"></block>
-        </category>
-        <!-- 公共块 -->
-        <category name="逻辑" colour="160">
-          <block type="controls_if"></block>
-          <block type="logic_compare"></block>
-        </category>
-      </xml>
     </div>
 
     <button @click="saveMethod">保存方法</button>
@@ -29,11 +13,19 @@
 
 <script>
 import * as Blockly from 'blockly'
+import * as Zh from 'blockly/msg/zh-hans'
 import { javascriptGenerator } from 'blockly/javascript'
-import basic_blocks from '../blocks/basic.json'
+import basic_blocks from '../blocks/basic.js'
+import card_blocks from '../blocks/blocks_card.js'
+import blocks_gameflow_hp from '@/blocks/blocks_gameflow_hp.js'
 import { toRaw } from 'vue'
 
+import toolbox_server from '@/blocks/toolbox_server'
+
 Blockly.defineBlocksWithJsonArray(basic_blocks)
+Blockly.defineBlocksWithJsonArray(card_blocks)
+Blockly.defineBlocksWithJsonArray(blocks_gameflow_hp)
+Blockly.setLocale(Zh)
 
 export default {
   props: {
@@ -64,7 +56,7 @@ export default {
     initBlockly() {
       // 初始化工作区
       const workspace = Blockly.inject(this.$refs.blocklyDiv, {
-        toolbox: this.$refs.toolbox,
+        toolbox: toolbox_server,
         scrollbars: true,
         trashcan: true,
         collapse: true,
