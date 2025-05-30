@@ -79,7 +79,39 @@ export default {
       selectedItem: null,
     }
   },
+  created() {
+    // 异步从 localStorage 加载数据
+    this.loadFromStorage()
+  },
   methods: {
+    async loadFromStorage() {
+      try {
+        const savedData = await this.asyncGetItem('currentMod')
+        if (savedData) {
+          this.currentMod = savedData
+        }
+      } catch (e) {
+        console.error('Failed to load data', e)
+      }
+    },
+    // 异步获取 localStorage 数据
+    asyncGetItem(key) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          const data = localStorage.getItem(key)
+          resolve(data ? JSON.parse(data) : null)
+        }, 0)
+      })
+    },
+    // 异步设置 localStorage 数据
+    asyncSetItem(key, value) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          localStorage.setItem(key, JSON.stringify(value))
+          resolve()
+        }, 0)
+      })
+    },
     newMod() {
       this.currentMod = createNewMod()
       this.selectedType = 'mod'
@@ -186,6 +218,18 @@ export default {
           break
         }
       }
+    },
+  },
+  watch: {
+    currentMod: {
+      async handler(newVal) {
+        try {
+          await this.asyncSetItem('currentMod', newVal)
+        } catch (e) {
+          console.error('Failed to save data', e)
+        }
+      },
+      deep: true,
     },
   },
 }
