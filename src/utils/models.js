@@ -40,3 +40,49 @@ export const createNewSkill = () => ({
 
   effects: [],
 });
+
+/**
+ * @typedef {Object} SkillEffectProp
+ * @property {string} type - 类别
+ * @property {string} name - 名字，仅用于界面
+ * @property {string} description - 描述，仅用于注释
+ */
+
+const effectTemplates = {
+  'trigger': {},
+  'active': {},
+  'viewas': {},
+  'targetmod': {
+    type: 'targetmod',
+    name: '',
+    description: '',
+    properties: [],
+    methods: [
+      {
+        name: 'residue_func',
+        description: '用于修改某卡牌的使用次数',
+        type: 'client',
+        params: [
+          {
+            name: "self",
+            type: "TargetModSkill",
+          },
+          // ...
+        ],
+        ret: "number",
+        blockData: null,
+      },
+      // ...
+    ],
+  },
+}
+
+/**
+ * @param {SkillEffectProp} effectData 
+ */
+export const createNewEffect = (effectData) => {
+  let ret = { ...effectTemplates[effectData.type] };
+  ret.name = effectData.name;
+  ret.description = effectData.description;
+  return ret;
+};
