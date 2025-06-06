@@ -108,7 +108,7 @@ ul {
 }
 
 .tree-node {
-  padding: 4px 8px;
+  padding: 6px 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -133,7 +133,7 @@ ul {
   height: 1.1em;
   display: flex;
   align-items: center;
-  margin-top: 2px;
+  justify-content: center;
 }
 
 .tree-node svg {

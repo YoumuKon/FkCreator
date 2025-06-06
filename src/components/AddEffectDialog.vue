@@ -1,188 +1,142 @@
 <template>
-  <div class="dialog-overlay">
-    <div class="add-effect-dialog">
-      <div class="dialog-header">
-        <h3>添加新效果</h3>
-        <button class="close-btn" @click="close">&times;</button>
-      </div>
-
-      <div class="dialog-body">
-        <div class="effect-type-selector">
-          <h4>选择效果类型</h4>
-
-          <div class="effect-types">
-            <div
-              v-for="type in effectTypes"
-              :key="type.id"
-              class="effect-type-card"
-              :class="{ selected: selectedType === type.id }"
-              @click="selectType(type.id)"
-            >
-              <div class="type-icon">
-                <i :class="type.icon"></i>
-              </div>
-              <div class="type-info">
-                <h5>{{ type.name }}</h5>
-                <p>{{ type.description }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="effect-config" v-if="selectedType">
-          <h4>效果配置</h4>
-          <div class="form-group">
-            <label>效果名称</label>
-            <input type="text" v-model="effectName" placeholder="输入效果名称" />
-          </div>
-          <div class="form-group">
-            <label>效果描述</label>
-            <textarea v-model="effectDescription" placeholder="描述这个效果的用途"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <div class="dialog-footer">
-        <button class="cancel-btn" @click="close">取消</button>
-        <button
-          class="confirm-btn"
-          @click="confirm"
-          :disabled="!selectedType || !effectName.trim()"
+  <el-dialog
+    :model-value="props.modelValue"
+    @close="close"
+    title="添加效果"
+    :close-on-click-modal="false"
+  >
+    <div class="effect-type-selector">
+      <h4>选择效果类型</h4>
+      <div class="effect-types">
+        <div
+          v-for="type in effectTypes"
+          :key="type.id"
+          class="effect-type-card"
+          :class="{ selected: selectedType === type.id }"
+          @click="selectType(type.id)"
         >
-          创建效果
-        </button>
+          <div class="type-info">
+            <h5>{{ type.name }}</h5>
+            <p>{{ type.description }}</p>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+    <div class="effect-config" v-if="selectedType">
+      <h4>效果配置</h4>
+      <el-form :model="effectRef">
+        <el-form-item label="效果名称" prop="name">
+          <el-input v-model="effectRef.name" placeholder="输入效果名称" />
+        </el-form-item>
+        <el-form-item label="效果描述" prop="description">
+          <el-input
+            type="textarea"
+            v-model="effectRef.description"
+            placeholder="输入效果描述"
+            :rows="3"
+          />
+        </el-form-item>
+      </el-form>
+    </div>
+    <template #footer>
+      <el-button class="cancel-btn" @click="close">取消</el-button>
+      <el-button
+        class="confirm-btn"
+        type="primary"
+        @click="confirm"
+        :disabled="!selectedType || !effectRef.name"
+      >
+        确认
+      </el-button>
+    </template>
+  </el-dialog>
 </template>
 
-<script>
-export default {
-  props: {
-    // visible: {
-    //   type: Boolean,
-    //   required: true,
-    // },
-  },
-  data() {
-    return {
-      selectedType: null,
-      effectName: '',
-      effectDescription: '',
-      effectTypes: [
-        {
-          id: 'animation',
-          name: '动画效果',
-          description: '创建时间轴动画和过渡效果',
-          icon: 'fas fa-film'
-        },
-        {
-          id: 'interaction',
-          name: '交互效果',
-          description: '响应用户输入的交互效果',
-          icon: 'fas fa-hand-pointer'
-        },
-        {
-          id: 'data',
-          name: '数据处理',
-          description: '数据转换和处理流程',
-          icon: 'fas fa-database'
-        },
-        {
-          id: 'custom',
-          name: '自定义效果',
-          description: '从头开始创建自定义效果',
-          icon: 'fas fa-cogs'
-        }
-      ]
-    };
-  },
-  methods: {
-    selectType(typeId) {
-      this.selectedType = typeId;
-      // 设置默认名称
-      const type = this.effectTypes.find((t) => t.id === typeId);
-      this.effectName = `${type.name} ${new Date().getTime().toString().slice(-4)}`;
-    },
-    close() {
-      this.$emit('close');
-      this.resetForm();
-    },
-    confirm() {
-      this.$emit('create', {
-        type: this.selectedType,
-        name: this.effectName,
-        description: this.effectDescription
-      });
-      this.resetForm();
-      this.close();
-    },
-    resetForm() {
-      this.selectedType = null;
-      this.effectName = '';
-      this.effectDescription = '';
-    }
+<script setup>
+import { ref } from 'vue';
+
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false
   }
+});
+const effectRef = ref({
+  name: '',
+  description: ''
+});
+const emit = defineEmits(['create', 'update:modelValue']);
+const selectedType = ref(null);
+const effectTypes = ref([
+  {
+    id: 'animation',
+    name: '动画效果',
+    description: '创建时间轴动画和过渡效果',
+    icon: 'fas fa-film'
+  },
+  {
+    id: 'interaction',
+    name: '交互效果',
+    description: '响应用户输入的交互效果',
+    icon: 'fas fa-hand-pointer'
+  },
+  {
+    id: 'data',
+    name: '数据处理',
+    description: '数据转换和处理流程',
+    icon: 'fas fa-database'
+  },
+  {
+    id: 'custom',
+    name: '自定义效果',
+    description: '从头开始创建自定义效果',
+    icon: 'fas fa-cogs'
+  }
+]);
+const selectType = (typeId) => {
+  selectedType.value = typeId;
+  // 设置默认名称
+  const type = effectTypes.value.find((t) => t.id === typeId);
+  effectRef.value.name = `${type.name} ${new Date().getTime().toString().slice(-4)}`;
+};
+const close = () => {
+  emit('update:modelValue', false);
+  resetForm();
+};
+const confirm = () => {
+  emit('create', {
+    type: selectedType.value,
+    ...effectRef.value
+  });
+  close();
+};
+
+const resetForm = () => {
+  effectRef.value.name = '';
+  effectRef.value.description = '';
+  selectedType.value = null;
 };
 </script>
 
 <style scoped>
-.dialog-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.add-effect-dialog {
-  background: white;
-  border-radius: 8px;
-  width: 600px;
-  max-width: 90%;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.dialog-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.dialog-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.close-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-}
-
-.dialog-body {
-  padding: 20px;
-  overflow-y: auto;
-  flex-grow: 1;
+.effect-config {
+  margin-top: 40px;
 }
 
 .effect-type-selector h4,
 .effect-config h4 {
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   color: #333;
+  font-size: 1rem;
+  text-shadow:
+    0 0 0.4px rgba(0, 0, 0, 0.5),
+    0 0 0.4px rgba(0, 0, 0, 0.5),
+    0 0 0.4px rgba(0, 0, 0, 0.5);
+  border-left: #4a90e2 3px solid;
+  background-color: #eee;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .effect-types {
@@ -194,7 +148,7 @@ export default {
 
 .effect-type-card {
   border: 1px solid #ddd;
-  border-radius: 6px;
+  border-radius: var(--el-border-radius-base);
   padding: 16px;
   cursor: pointer;
   transition: all 0.2s;
@@ -210,79 +164,19 @@ export default {
   background-color: #f5f9ff;
 }
 
-.type-icon {
-  font-size: 2rem;
-  color: #4a90e2;
-  margin-bottom: 12px;
-}
-
 .type-info h5 {
   margin: 0 0 8px 0;
   color: #333;
+  font-size: 1rem;
+  text-shadow:
+    0 0 0.4px rgba(0, 0, 0, 0.5),
+    0 0 0.4px rgba(0, 0, 0, 0.5),
+    0 0 0.4px rgba(0, 0, 0, 0.5);
 }
 
 .type-info p {
   margin: 0;
   color: #666;
   font-size: 0.9rem;
-}
-
-.form-group {
-  margin-bottom: 16px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #444;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.form-group textarea {
-  min-height: 80px;
-  resize: vertical;
-}
-
-.dialog-footer {
-  padding: 16px 24px;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.cancel-btn,
-.confirm-btn {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.cancel-btn {
-  background: #f5f5f5;
-  border: 1px solid #ddd;
-  color: #333;
-}
-
-.confirm-btn {
-  background: #4a90e2;
-  border: 1px solid #3a7bc8;
-  color: white;
-}
-
-.confirm-btn:disabled {
-  background: #cccccc;
-  border-color: #bbbbbb;
-  cursor: not-allowed;
 }
 </style>

@@ -7,7 +7,7 @@ import {
   createNewSkill
 } from '@/utils/models.js';
 import { loadModFromFile, saveModToFile } from '@/utils/fileHandler.js';
-import { ElMessageBox } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { exportToLua } from '@/utils/exporter.js';
 
 export const useModStore = defineStore('mod', () => {
@@ -95,17 +95,18 @@ export const useModStore = defineStore('mod', () => {
   // 删除包或武将
   const deletePackage = () => {
     const node = currentNode.value.value;
+    let tips = `确认删除包【${node.name}】？`;
     if (node.generals.length > 0 || node.skills.length > 0) {
-      ElMessageBox.confirm('删除包将会删除所有包含的武将和技能，是否继续？', '警告', {
-        confirmButtonText: '继续',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deletePackageInMod(node.id);
-      });
-    } else {
-      deletePackageInMod(node.id);
+      tips = `删除包【${node.name}】将会删除所有包含的武将和技能，是否继续？`;
     }
+    ElMessageBox.confirm(tips, '警告', {
+      confirmButtonText: '继续',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      deletePackageInMod(node.id);
+      ElMessage.success('删除成功！');
+    });
   };
   const deletePackageInMod = (packageId) => {
     currentMod.value.packages = currentMod.value.packages.filter((p) => p.id !== packageId);
@@ -116,21 +117,18 @@ export const useModStore = defineStore('mod', () => {
       };
     }
   };
-
   // 删除武将
   const deleteGeneral = () => {
     const node = currentNode.value.value;
-    if (node.skills.length > 0) {
-      ElMessageBox.confirm('删除武将将会删除所有包含的技能，是否继续？', '警告', {
-        confirmButtonText: '继续',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteGeneralInMod(node.id);
-      });
-    } else {
+    const tips = `确认删除武将【${node.name}】？`;
+    ElMessageBox.confirm(tips, '警告', {
+      confirmButtonText: '继续',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
       deleteGeneralInMod(node.id);
-    }
+      ElMessage.success('删除成功！');
+    });
   };
 
   const deleteGeneralInMod = (generalId) => {
@@ -151,7 +149,15 @@ export const useModStore = defineStore('mod', () => {
 
   const deleteSkill = () => {
     const node = currentNode.value.value;
-    deleteSkillInMod(node.id);
+    const tips = `确认删除技能【${node.name}】？`;
+    ElMessageBox.confirm(tips, '警告', {
+      confirmButtonText: '继续',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      deleteSkillInMod(node.id);
+      ElMessage.success('删除成功！');
+    });
   };
 
   const deleteSkillInMod = (skillId) => {
