@@ -1,130 +1,57 @@
 <template>
-  <div class="skill-editor">
-    <!-- Effect和Method两个编辑器也塞到这个div好了 -->
-    <EffectEditor
-      v-if="selectedType == 'effect'"
-      :effect="selectEffect"
-      @saveEffect="updateEffect"
-      @edit-method="editMethod"
-    />
-    <MethodEditor v-else-if="selectedType == 'method'" :method="selectMethod" />
-    <div v-else-if="selectedType == 'skill'">
-      <h2>技能设置</h2>
-      <div class="lr-container">
-        <div class="form-group">
-          <label>技能名称</label>
-          <input v-model="localSkill.name" type="text" />
-        </div>
-
-        <div class="form-group">
-          <label>内部名称</label>
-          <input v-model="localSkill.internal_name" type="text" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>技能描述</label>
-        <textarea v-model="localSkill.description"></textarea>
-      </div>
-
-      <button @click="showAddDialog">添加效果</button>
-
-      <div class="effect-list">
-        <div
-          v-for="effect in this.localSkill.effects"
-          :key="effect.name"
-          class="effect-item"
-          @click="editEffect(effect)"
-        >
-          {{ effect.name }}
-        </div>
-      </div>
-
-      <AddEffectDialog v-if="showDialog" @close="showDialog = false" @create="createEffect" />
-
-      <button @click="deleteSkill" class="delete-button">删除技能</button>
-    </div>
-  </div>
+  <el-form label-width="80px">
+    <el-form-item>
+      <template #label>
+        <span>技能名称</span>
+        <span class="remark">（长度限制10）</span>
+      </template>
+      <el-input v-model="localValue.name" placeholder="技能名称" maxlength="10"></el-input>
+    </el-form-item>
+    <el-form-item>
+      <template #label>
+        <span>内部名称</span>
+        <span class="remark">（长度限制20）</span>
+      </template>
+      <el-input
+        v-model="localValue.internal_name"
+        placeholder="请输入内部名称"
+        maxlength="20"
+      ></el-input>
+    </el-form-item>
+    <el-form-item label="技能描述">
+      <el-input
+        type="textarea"
+        :rows="3"
+        v-model="localValue.description"
+        placeholder="这是一个刚创建的技能，请添加相关信息"
+      ></el-input>
+    </el-form-item>
+  </el-form>
 </template>
 
-<script>
-import AddEffectDialog from './AddEffectDialog.vue'
-import { createNewEffect } from '../utils/models.js'
-import EffectEditor from './EffectEditor.vue'
-import MethodEditor from './MethodEditor.vue'
+<script setup>
+import { ref, watchEffect } from 'vue';
 
-export default {
-  components: {
-    AddEffectDialog,
-    EffectEditor,
-    MethodEditor,
-  },
-  props: {
-    skill: Object,
-  },
-  data() {
-    return {
-      localSkill: { ...this.skill },
-      showDialog: false,
-      selectedType: 'skill',
-      selectEffect: null,
-      selectMethod: null,
-    }
-  },
-  watch: {
-    localSkill: {
-      deep: true,
-      handler(newVal) {
-        this.$emit('update:skill', newVal)
-      },
-    },
-    skill(newVal) {
-      this.localSkill = { ...newVal }
-    },
-  },
-  methods: {
-    showAddDialog() {
-      this.showDialog = true
-    },
-    createEffect(effectData) {
-      const newEffect = createNewEffect({
-        type: 'targetmod',
-        name: effectData.name,
-        description: effectData.description,
-      })
-      this.localSkill.effects.push(newEffect)
-    },
-    editEffect(effect) {
-      // console.log('editing:::', effect)
-      // this.$router.push(`/effect/${effect.id}`)
-      this.selectEffect = effect
-      this.selectedType = 'effect'
-    },
-    updateEffect(effect) {
-      const index = this.localSkill.effects.findIndex((e) => e.name === effect.name)
-      if (index !== -1) {
-        this.localSkill.effects[index] = effect
-      }
-      // 返回初始页
-      this.selectedType = 'skill'
-    },
-    editMethod(method) {
-      console.log('editing:::', method)
-      // this.$router.push(`/effect/${effect.id}`)
-      this.selectMethod = method
-      this.selectedType = 'method'
-    },
-    updateEffect(effect) {
-      const index = this.localSkill.effects.findIndex((e) => e.name === effect.name)
-      if (index !== -1) {
-        this.localSkill.effects[index] = effect
-      }
-      // 返回初始页
-      this.selectedType = 'skill'
-    },
-    deleteSkill() {
-      this.$emit('delete', this.localSkill.id)
-    },
-  },
-}
+const { modelValue } = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  }
+});
+const emits = defineEmits(['update:modelValue']);
+const localValue = ref(modelValue);
+const updateValue = (value) => {
+  localValue.value = value;
+  emits('update:modelValue', localValue.value);
+};
+watchEffect(() => {
+  updateValue(localValue.value);
+});
 </script>
+
+<style>
+.remark {
+  font-size: 0.8em;
+  color: #888;
+}
+</style>

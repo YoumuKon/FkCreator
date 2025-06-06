@@ -12,24 +12,23 @@
 </template>
 
 <script>
-import * as Blockly from 'blockly'
-import * as Zh from 'blockly/msg/zh-hans'
-import { javascriptGenerator } from 'blockly/javascript'
-import basic_blocks from '../blocks/basic.js'
-import card_blocks from '../blocks/blocks_card.js'
-import blocks_gameflow_hp from '@/blocks/blocks_gameflow_hp.js'
-import { toRaw } from 'vue'
+import * as Blockly from 'blockly';
+import * as Zh from 'blockly/msg/zh-hans';
+import basic_blocks from '../blocks/basic.js';
+import card_blocks from '../blocks/blocks_card.js';
+import blocks_gameflow_hp from '@/blocks/blocks_gameflow_hp.js';
+import { toRaw } from 'vue';
 
-import toolbox_server from '@/blocks/toolbox_server'
+import toolbox_server from '@/blocks/toolbox_server';
 
-Blockly.defineBlocksWithJsonArray(basic_blocks)
-Blockly.defineBlocksWithJsonArray(card_blocks)
-Blockly.defineBlocksWithJsonArray(blocks_gameflow_hp)
-Blockly.setLocale(Zh)
+Blockly.defineBlocksWithJsonArray(basic_blocks);
+Blockly.defineBlocksWithJsonArray(card_blocks);
+Blockly.defineBlocksWithJsonArray(blocks_gameflow_hp);
+Blockly.setLocale(Zh);
 
 export default {
   props: {
-    method: null,
+    method: null
   },
   data() {
     return {
@@ -38,18 +37,18 @@ export default {
        * @type {Blockly.WorkspaceSvg}
        */
       workspace: null,
-      effect: null,
-    }
+      effect: null
+    };
   },
   mounted() {
     this.$nextTick(() => {
-      this.initBlockly()
-    })
+      this.initBlockly();
+    });
   },
   beforeUnmount() {
-    const workspace = toRaw(this.workspace)
+    const workspace = toRaw(this.workspace);
     if (workspace) {
-      workspace.dispose()
+      workspace.dispose();
     }
   },
   methods: {
@@ -67,70 +66,70 @@ export default {
           maxScale: 3,
           minScale: 0.3,
           scaleSpeed: 1.2,
-          pinch: true,
-        },
-      })
+          pinch: true
+        }
+      });
 
-      this.workspace = workspace
+      this.workspace = workspace;
 
       // 加载已有块
-      workspace.addChangeListener(this.onBlocklyChange)
+      workspace.addChangeListener(this.onBlocklyChange);
 
       if (this.localMethod.blocksJson) {
-        Blockly.serialization.workspaces.load(this.localMethod.blocksJson)
+        Blockly.serialization.workspaces.load(this.localMethod.blocksJson);
       } else {
-        this.addDefaultStartBlock()
+        this.addDefaultStartBlock();
       }
     },
     addDefaultStartBlock() {
-      const workspace = toRaw(this.workspace)
-      const startBlock = workspace.newBlock('function_start')
-      startBlock.initSvg()
-      startBlock.render()
-      startBlock.setDeletable(false)
-      startBlock.moveBy(30, 30)
+      const workspace = toRaw(this.workspace);
+      const startBlock = workspace.newBlock('function_start');
+      startBlock.initSvg();
+      startBlock.render();
+      startBlock.setDeletable(false);
+      startBlock.moveBy(30, 30);
     },
     onBlocklyChange(event) {
       // 确保function_start块不能被删除
-      const workspace = toRaw(this.workspace)
+      const workspace = toRaw(this.workspace);
       if (event.type === Blockly.Events.BLOCK_DELETE) {
-        const block = workspace.getBlockById(event.blockId)
+        const block = workspace.getBlockById(event.blockId);
         if (block && block.type === 'function_start') {
-          Blockly.Events.disable()
-          this.addDefaultStartBlock()
-          Blockly.Events.enable()
+          Blockly.Events.disable();
+          this.addDefaultStartBlock();
+          Blockly.Events.enable();
         }
       }
     },
     saveMethod() {
-      const workspace = toRaw(this.workspace)
-      this.localMethod.blocksJson = Blockly.serialization.workspaces.save(workspace)
+      const workspace = toRaw(this.workspace);
+      this.localMethod.blocksJson = Blockly.serialization.workspaces.save(workspace);
     },
     findStartBlock() {
-      const workspace = toRaw(this.workspace)
-      return Array.from(workspace.getAllBlocks()).find((block) => block.type === 'function_start')
+      const workspace = toRaw(this.workspace);
+      return Array.from(workspace.getAllBlocks()).find((block) => block.type === 'function_start');
     },
     getConnectedBlocks(startBlock) {
-      const blocks = [startBlock]
-      let current = startBlock.getNextBlock()
+      const blocks = [startBlock];
+      let current = startBlock.getNextBlock();
 
       while (current) {
-        blocks.push(current)
-        current = current.getNextBlock()
+        blocks.push(current);
+        current = current.getNextBlock();
       }
 
-      return blocks
+      return blocks;
     },
     getBlockFields(block) {
       // 获取块的所有字段值
     },
     resetToDefault() {
-      this.localMethod.blocksJson = null
-      this.localMethod.isDefault = true
-      const workspace = toRaw(this.workspace)
-      workspace.clear()
-      this.addDefaultStartBlock()
-    },
-  },
-}
+      this.localMethod.blocksJson = null;
+      this.localMethod.isDefault = true;
+      const workspace = toRaw(this.workspace);
+      workspace.clear();
+      this.addDefaultStartBlock();
+    }
+  }
+};
 </script>

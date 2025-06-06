@@ -14,7 +14,8 @@
 
 ## 运行起来
 
-推荐使用[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)插件。
+推荐使用[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+插件。
 
 运行以下命令可初始化项目：
 

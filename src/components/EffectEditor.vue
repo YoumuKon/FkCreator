@@ -21,12 +21,12 @@
 <script>
 export default {
   props: {
-    effect: null,
+    effect: null
   },
   data() {
     return {
-      localEffect: { ...this.effect },
-    }
+      localEffect: { ...this.effect }
+    };
   },
   methods: {
     saveEffect() {
@@ -35,8 +35,8 @@ export default {
       // this.$parent.effects.splice(index, 1, this.effect)
       // this.$parent.saveEffects()
       // this.$router.go(-1)
-      this.$emit('saveEffect', this.localEffect)
-    },
-  },
-}
+      this.$emit('saveEffect', this.localEffect);
+    }
+  }
+};
 </script>

@@ -1,4 +1,4 @@
-import * as Blockly from 'blockly'
+import * as Blockly from 'blockly';
 
 /**
  * 创建一个支持可选字段配置的 Blockly 块定义（含mutator）
@@ -12,7 +12,7 @@ export function createConfigurableBlock({
   colour,
   tooltip,
   optionalFields, // [{ type: 'source', message: '来源', inputType: 'input_value', name: 'SOURCE', check: 'Player' }]
-  dropdowns = {}, // e.g. { DAMAGE_TYPE: [['普', 'normal'], ['火', 'fire']] }
+  dropdowns = {} // e.g. { DAMAGE_TYPE: [['普', 'normal'], ['火', 'fire']] }
 }) {
   const blockJson = {
     type,
@@ -24,20 +24,20 @@ export function createConfigurableBlock({
     nextStatement: null,
     colour,
     tooltip,
-    helpUrl: ""
+    helpUrl: ''
   };
 
   const mutatorMixin = {
     mutationToDom() {
-      const container = document.createElement("mutation");
-      optionalFields.forEach(field => {
-        container.setAttribute(`has_${field.name}`, this[`has_${field.name}_`] ? "true" : "false");
+      const container = document.createElement('mutation');
+      optionalFields.forEach((field) => {
+        container.setAttribute(`has_${field.name}`, this[`has_${field.name}_`] ? 'true' : 'false');
       });
       return container;
     },
     domToMutation(xmlElement) {
-      optionalFields.forEach(field => {
-        this[`has_${field.name}_`] = xmlElement.getAttribute(`has_${field.name}`) === "true";
+      optionalFields.forEach((field) => {
+        this[`has_${field.name}_`] = xmlElement.getAttribute(`has_${field.name}`) === 'true';
       });
       this.updateShape_();
     },
@@ -45,9 +45,9 @@ export function createConfigurableBlock({
       const containerBlock = workspace.newBlock(`${type}_mutator_container`);
       containerBlock.initSvg();
 
-      let connection = containerBlock.getInput("STACK").connection;
+      let connection = containerBlock.getInput('STACK').connection;
 
-      optionalFields.forEach(field => {
+      optionalFields.forEach((field) => {
         if (this[`has_${field.name}_`]) {
           const block = workspace.newBlock(`${type}_mutator_${field.name.toLowerCase()}`);
           block.initSvg();
@@ -59,13 +59,13 @@ export function createConfigurableBlock({
       return containerBlock;
     },
     compose(containerBlock) {
-      optionalFields.forEach(field => {
+      optionalFields.forEach((field) => {
         this[`has_${field.name}_`] = false;
       });
 
-      let clauseBlock = containerBlock.getInputTargetBlock("STACK");
+      let clauseBlock = containerBlock.getInputTargetBlock('STACK');
       while (clauseBlock) {
-        optionalFields.forEach(field => {
+        optionalFields.forEach((field) => {
           if (clauseBlock.type === `${type}_mutator_${field.name.toLowerCase()}`) {
             this[`has_${field.name}_`] = true;
           }
@@ -76,22 +76,22 @@ export function createConfigurableBlock({
       this.updateShape_();
     },
     updateShape_() {
-      optionalFields.forEach(field => {
+      optionalFields.forEach((field) => {
         if (this.getInput(field.name)) {
           //this.removeInput(field.name);
           return;
         }
         if (this[`has_${field.name}_`]) {
           let input;
-          if (field.inputType === "input_value") {
+          if (field.inputType === 'input_value') {
             input = this.appendValueInput(field.name)
               .setCheck(field.check)
               .setAlign(Blockly.ALIGN_RIGHT)
-              .appendField("\n" + field.message);
-          } else if (field.inputType === "dummy_input_dropdown") {
+              .appendField('\n' + field.message);
+          } else if (field.inputType === 'dummy_input_dropdown') {
             input = this.appendDummyInput(field.name)
               .setAlign(Blockly.ALIGN_RIGHT)
-              .appendField("\n" + field.message)
+              .appendField('\n' + field.message)
               .appendField(new Blockly.FieldDropdown(dropdowns[field.name]), field.name);
           }
           if (field.shadow) {
@@ -106,14 +106,14 @@ export function createConfigurableBlock({
 
   const containerBlock = {
     type: `${type}_mutator_container`,
-    message0: "更多信息\n%1",
-    args0: [{ type: "input_statement", name: "STACK" }],
+    message0: '更多信息\n%1',
+    args0: [{ type: 'input_statement', name: 'STACK' }],
     colour: 260,
-    tooltip: "添加可选字段",
+    tooltip: '添加可选字段',
     enableContextMenu: false
   };
 
-  const optionalFieldBlocks = optionalFields.map(field => ({
+  const optionalFieldBlocks = optionalFields.map((field) => ({
     type: `${type}_mutator_${field.name.toLowerCase()}`,
     message0: field.message,
     previousStatement: null,
@@ -127,12 +127,8 @@ export function createConfigurableBlock({
     `${type}_mutator`,
     mutatorMixin,
     null,
-    optionalFieldBlocks.map(f => f.type)
+    optionalFieldBlocks.map((f) => f.type)
   );
 
-  return [
-    blockJson,
-    containerBlock,
-    ...optionalFieldBlocks
-  ];
+  return [blockJson, containerBlock, ...optionalFieldBlocks];
 }

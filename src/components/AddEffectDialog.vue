@@ -74,56 +74,56 @@ export default {
           id: 'animation',
           name: '动画效果',
           description: '创建时间轴动画和过渡效果',
-          icon: 'fas fa-film',
+          icon: 'fas fa-film'
         },
         {
           id: 'interaction',
           name: '交互效果',
           description: '响应用户输入的交互效果',
-          icon: 'fas fa-hand-pointer',
+          icon: 'fas fa-hand-pointer'
         },
         {
           id: 'data',
           name: '数据处理',
           description: '数据转换和处理流程',
-          icon: 'fas fa-database',
+          icon: 'fas fa-database'
         },
         {
           id: 'custom',
           name: '自定义效果',
           description: '从头开始创建自定义效果',
-          icon: 'fas fa-cogs',
-        },
-      ],
-    }
+          icon: 'fas fa-cogs'
+        }
+      ]
+    };
   },
   methods: {
     selectType(typeId) {
-      this.selectedType = typeId
+      this.selectedType = typeId;
       // 设置默认名称
-      const type = this.effectTypes.find((t) => t.id === typeId)
-      this.effectName = `${type.name} ${new Date().getTime().toString().slice(-4)}`
+      const type = this.effectTypes.find((t) => t.id === typeId);
+      this.effectName = `${type.name} ${new Date().getTime().toString().slice(-4)}`;
     },
     close() {
-      this.$emit('close')
-      this.resetForm()
+      this.$emit('close');
+      this.resetForm();
     },
     confirm() {
       this.$emit('create', {
         type: this.selectedType,
         name: this.effectName,
-        description: this.effectDescription,
-      })
-      this.resetForm()
-      this.close()
+        description: this.effectDescription
+      });
+      this.resetForm();
+      this.close();
     },
     resetForm() {
-      this.selectedType = null
-      this.effectName = ''
-      this.effectDescription = ''
-    },
-  },
-}
+      this.selectedType = null;
+      this.effectName = '';
+      this.effectDescription = '';
+    }
+  }
+};
 </script>
 
 <style scoped>

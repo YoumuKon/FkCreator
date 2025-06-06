@@ -5,7 +5,7 @@ export const createNewMod = () => ({
   internal_name: '',
   author: '',
   version: '1.0.0',
-  description: '这是一个刚新建的拓展，将相关数据改成你需要的。',
+  description: '',
   packages: []
 });
 
@@ -14,7 +14,7 @@ export const createNewPackage = () => ({
   id: `pkg_${Date.now()}`,
   name: `pkg_${Date.now()}`,
   internal_name: '',
-  description: '这是一个刚新建的包，将相关数据改成你需要的。',
+  description: '',
   generals: [],
   skills: []
 });
@@ -28,7 +28,7 @@ export const createNewGeneral = () => ({
   hp: 4,
   maxHp: 4,
 
-  skills: [],
+  skills: []
 });
 
 // 基础Skill结构
@@ -36,9 +36,8 @@ export const createNewSkill = () => ({
   id: `skill_${Date.now()}`,
   name: `skill_${Date.now()}`,
   internal_name: '',
-  description: '这是一个刚新建的技能，将相关数据改成你需要的。',
-
-  effects: [],
+  description: '',
+  effects: []
 });
 
 /**
@@ -49,10 +48,10 @@ export const createNewSkill = () => ({
  */
 
 const effectTemplates = {
-  'trigger': {},
-  'active': {},
-  'viewas': {},
-  'targetmod': {
+  trigger: {},
+  active: {},
+  viewas: {},
+  targetmod: {
     type: 'targetmod',
     name: '',
     description: '',
@@ -64,21 +63,21 @@ const effectTemplates = {
         type: 'client',
         params: [
           {
-            name: "self",
-            type: "TargetModSkill",
-          },
+            name: 'self',
+            type: 'TargetModSkill'
+          }
           // ...
         ],
-        ret: "number",
-        blockData: null,
-      },
+        ret: 'number',
+        blockData: null
+      }
       // ...
-    ],
-  },
-}
+    ]
+  }
+};
 
 /**
- * @param {SkillEffectProp} effectData 
+ * @param {SkillEffectProp} effectData
  */
 export const createNewEffect = (effectData) => {
   let ret = { ...effectTemplates[effectData.type] };

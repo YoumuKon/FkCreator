@@ -2,13 +2,13 @@ export const saveModToFile = async (modData) => {
   const dataStr = JSON.stringify(modData, null, 2);
   const blob = new Blob([dataStr], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
-  
+
   const a = document.createElement('a');
   a.href = url;
   a.download = `${modData.name.replace(/\s+/g, '_')}.mod.json`;
   document.body.appendChild(a);
   a.click();
-  
+
   // 清理
   setTimeout(() => {
     document.body.removeChild(a);
@@ -21,16 +21,16 @@ export const loadModFromFile = async () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json,.mod';
-    
-    input.onchange = e => {
+
+    input.onchange = (e) => {
       const file = e.target.files[0];
       if (!file) {
         reject(new Error('未选择文件'));
         return;
       }
-      
+
       const reader = new FileReader();
-      reader.onload = event => {
+      reader.onload = (event) => {
         try {
           const modData = JSON.parse(event.target.result);
           resolve(modData);
@@ -41,7 +41,7 @@ export const loadModFromFile = async () => {
       reader.onerror = () => reject(new Error('读取文件失败'));
       reader.readAsText(file);
     };
-    
+
     input.click();
   });
 };

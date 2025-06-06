@@ -5,7 +5,7 @@ export default {
   contents: [
     {
       type: 'controls_if',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'controls_repeat_ext',
@@ -15,78 +15,78 @@ export default {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 10,
-            },
-          },
-        },
-      },
+              NUM: 10
+            }
+          }
+        }
+      }
     },
     {
       type: 'controls_repeat',
       kind: 'block',
       enabled: false,
       fields: {
-        TIMES: 10,
-      },
+        TIMES: 10
+      }
     },
     {
       type: 'controls_whileUntil',
       kind: 'block',
       fields: {
-        MODE: 'WHILE',
-      },
+        MODE: 'WHILE'
+      }
     },
     {
       type: 'controls_for',
       kind: 'block',
       fields: {
         VAR: {
-          name: 'i',
-        },
+          name: 'i'
+        }
       },
       inputs: {
         FROM: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
+              NUM: 1
+            }
+          }
         },
         TO: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 10,
-            },
-          },
+              NUM: 10
+            }
+          }
         },
         BY: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
-        },
-      },
+              NUM: 1
+            }
+          }
+        }
+      }
     },
     {
       type: 'controls_forEach',
       kind: 'block',
       fields: {
         VAR: {
-          name: 'j',
-        },
-      },
+          name: 'j'
+        }
+      }
     },
     {
       type: 'controls_flow_statements',
       kind: 'block',
       enabled: false,
       fields: {
-        FLOW: 'BREAK',
-      },
-    },
-  ],
-}
+        FLOW: 'BREAK'
+      }
+    }
+  ]
+};

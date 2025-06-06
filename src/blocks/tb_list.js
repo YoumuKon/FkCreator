@@ -5,11 +5,11 @@ export default {
   contents: [
     {
       type: 'lists_create_with',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'lists_create_with',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'lists_repeat',
@@ -19,26 +19,26 @@ export default {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 5,
-            },
-          },
-        },
-      },
+              NUM: 5
+            }
+          }
+        }
+      }
     },
     {
       type: 'lists_length',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'lists_isEmpty',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'lists_indexOf',
       kind: 'block',
 
       fields: {
-        END: 'FIRST',
+        END: 'FIRST'
       },
       inputs: {
         VALUE: {
@@ -46,19 +46,19 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'list',
-              },
-            },
-          },
-        },
-      },
+                name: 'list'
+              }
+            }
+          }
+        }
+      }
     },
     {
       type: 'lists_getIndex',
       kind: 'block',
       fields: {
         MODE: 'GET',
-        WHERE: 'FROM_START',
+        WHERE: 'FROM_START'
       },
       inputs: {
         VALUE: {
@@ -66,19 +66,19 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'list',
-              },
-            },
-          },
-        },
-      },
+                name: 'list'
+              }
+            }
+          }
+        }
+      }
     },
     {
       type: 'lists_setIndex',
       kind: 'block',
       fields: {
         MODE: 'SET',
-        WHERE: 'FROM_START',
+        WHERE: 'FROM_START'
       },
       inputs: {
         LIST: {
@@ -86,19 +86,19 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'list',
-              },
-            },
-          },
-        },
-      },
+                name: 'list'
+              }
+            }
+          }
+        }
+      }
     },
     {
       type: 'lists_getSublist',
       kind: 'block',
       fields: {
         WHERE1: 'FROM_START',
-        WHERE2: 'FROM_START',
+        WHERE2: 'FROM_START'
       },
       inputs: {
         LIST: {
@@ -106,30 +106,30 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'list',
-              },
-            },
-          },
-        },
-      },
+                name: 'list'
+              }
+            }
+          }
+        }
+      }
     },
     {
       type: 'lists_split',
       kind: 'block',
 
       fields: {
-        MODE: 'SPLIT',
+        MODE: 'SPLIT'
       },
       inputs: {
         DELIM: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: ',',
-            },
-          },
-        },
-      },
+              TEXT: ','
+            }
+          }
+        }
+      }
     },
     {
       type: 'lists_sort',
@@ -137,12 +137,12 @@ export default {
 
       fields: {
         TYPE: 'NUMERIC',
-        DIRECTION: '1',
-      },
+        DIRECTION: '1'
+      }
     },
     {
       type: 'lists_reverse',
-      kind: 'block',
-    },
-  ],
-}
+      kind: 'block'
+    }
+  ]
+};

@@ -7,115 +7,115 @@ export default {
       type: 'math_number',
       kind: 'block',
       fields: {
-        NUM: 123,
-      },
+        NUM: 123
+      }
     },
     {
       type: 'math_arithmetic',
       kind: 'block',
       fields: {
-        OP: 'ADD',
+        OP: 'ADD'
       },
       inputs: {
         A: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
+              NUM: 1
+            }
+          }
         },
         B: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
-        },
-      },
+              NUM: 1
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_single',
       kind: 'block',
       fields: {
-        OP: 'ROOT',
+        OP: 'ROOT'
       },
       inputs: {
         NUM: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 9,
-            },
-          },
-        },
-      },
+              NUM: 9
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_trig',
       kind: 'block',
       fields: {
-        OP: 'SIN',
+        OP: 'SIN'
       },
       inputs: {
         NUM: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 45,
-            },
-          },
-        },
-      },
+              NUM: 45
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_constant',
       kind: 'block',
       fields: {
-        CONSTANT: 'PI',
-      },
+        CONSTANT: 'PI'
+      }
     },
     {
       type: 'math_number_property',
       kind: 'block',
       fields: {
-        PROPERTY: 'EVEN',
+        PROPERTY: 'EVEN'
       },
       inputs: {
         NUMBER_TO_CHECK: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 0,
-            },
-          },
-        },
-      },
+              NUM: 0
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_round',
       kind: 'block',
       fields: {
-        OP: 'ROUND',
+        OP: 'ROUND'
       },
       inputs: {
         NUM: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 3.1,
-            },
-          },
-        },
-      },
+              NUM: 3.1
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_on_list',
       kind: 'block',
       fields: {
-        OP: 'SUM',
-      },
+        OP: 'SUM'
+      }
     },
     {
       type: 'math_modulo',
@@ -125,19 +125,19 @@ export default {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 64,
-            },
-          },
+              NUM: 64
+            }
+          }
         },
         DIVISOR: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 10,
-            },
-          },
-        },
-      },
+              NUM: 10
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_constrain',
@@ -147,27 +147,27 @@ export default {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 50,
-            },
-          },
+              NUM: 50
+            }
+          }
         },
         LOW: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
+              NUM: 1
+            }
+          }
         },
         HIGH: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 100,
-            },
-          },
-        },
-      },
+              NUM: 100
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_random_int',
@@ -177,23 +177,23 @@ export default {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
+              NUM: 1
+            }
+          }
         },
         TO: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 100,
-            },
-          },
-        },
-      },
+              NUM: 100
+            }
+          }
+        }
+      }
     },
     {
       type: 'math_random_float',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'math_atan2',
@@ -203,19 +203,19 @@ export default {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
+              NUM: 1
+            }
+          }
         },
         Y: {
           shadow: {
             type: 'math_number',
             fields: {
-              NUM: 1,
-            },
-          },
-        },
-      },
-    },
-  ],
-}
+              NUM: 1
+            }
+          }
+        }
+      }
+    }
+  ]
+};
