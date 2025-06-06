@@ -58,10 +58,10 @@ export const useModStore = defineStore('mod', () => {
     }
     try {
       await saveModToFile(currentMod.value);
-      await ElMessageBox.alert('保存成功!');
     } catch (error) {
       await ElMessageBox.alert('保存失败: ' + error.message);
     }
+    await ElMessageBox.alert('保存成功!');
   };
 
   // 导出Lua
