@@ -16,26 +16,17 @@
             <span>内部名称（code）</span>
             <span class="remark">（长度限制60）</span>
           </template>
-          <el-input
-            v-model="localValue.internal_name"
-            placeholder="请输入内部名称"
-            maxlength="60"
-          ></el-input>
+          <el-input v-model="localValue.internal_name" placeholder="请输入内部名称" maxlength="60"></el-input>
         </el-form-item>
       </el-col>
     </el-row>
     <el-form-item label="技能描述" prop="description">
-      <el-input
-        type="textarea"
-        :rows="3"
-        v-model="localValue.description"
-        placeholder="这是一个刚创建的技能，请添加相关信息"
-      ></el-input>
+      <el-input type="textarea" :rows="4" v-model="localValue.description" placeholder="这是一个刚创建的技能，请添加相关信息"></el-input>
     </el-form-item>
     <el-form-item label="技能效果">
       <el-row>
         <el-col :span="24">
-          <el-button type="primary" plain @click="showAddEffectDialog = true">添加效果</el-button>
+          <el-button type="primary" @click="showAddEffectDialog = true">添加效果</el-button>
         </el-col>
         <el-col :span="24">
           <el-table :data="localValue.effects" border stripe class="table">
@@ -47,21 +38,8 @@
             </el-table-column>
             <el-table-column label="操作" min-width="80" align="center">
               <template #default="scope">
-                <el-button
-                  type="text"
-                  size="small"
-                  @click="() => ElMessageBox.alert('打开配置界面')"
-                >
-                  配置
-                </el-button>
-                <el-button
-                  type="danger"
-                  text
-                  size="small"
-                  @click="deleteEffect(scope.$index, scope.row)"
-                >
-                  删除
-                </el-button>
+                <el-button type="text" @click="() => openEffectMethodsDialog(scope.row)"> 方法配置 </el-button>
+                <el-button type="danger" text @click="deleteEffect(scope.$index, scope.row)"> 删除 </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -70,13 +48,16 @@
     </el-form-item>
   </el-form>
   <AddEffectDialog v-model="showAddEffectDialog" @create="createEffect" />
+  <EffectMethodsDialog v-model="showEffectMethodsDialog" :data="effectMethods"></EffectMethodsDialog>
 </template>
 
 <script setup>
 import { reactive, ref, watchEffect } from 'vue';
-import AddEffectDialog from '@/components/AddEffectDialog.vue';
-import { createNewEffect } from '@/utils/models.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import AddEffectDialog from '@/components/AddEffectDialog.vue';
+import EffectMethodsDialog from '@/components/EffectMethodsDialog.vue';
+import { getTemplateByEffectType } from '@/utils/effects.js';
+import { createNewEffect } from '@/utils/models.js';
 
 const { modelValue } = defineProps({
   modelValue: {
@@ -109,13 +90,16 @@ const formRules = reactive({
 const showAddEffectDialog = ref(false);
 
 const createEffect = (data) => {
-  const newEffect = createNewEffect({
-    type: 'targetmod',
-    name: data.name,
-    description: data.description
-  });
-  localValue.value.effects.push(newEffect);
-  return newEffect;
+  const template = getTemplateByEffectType(data.type);
+  if (!template || Object.keys(template).length === 0) {
+    ElMessage.error('未找到效果模板');
+    return;
+  }
+  const newEffect = createNewEffect(data);
+  // 合并模板和新效果
+  const resEffect = { ...JSON.parse(JSON.stringify(template)), ...newEffect };
+  localValue.value.effects.push(resEffect);
+  return resEffect;
 };
 
 const deleteEffect = (index, data) => {
@@ -127,6 +111,13 @@ const deleteEffect = (index, data) => {
     localValue.value.effects.splice(index, 1);
     ElMessage.success('删除成功');
   });
+};
+
+const showEffectMethodsDialog = ref(false);
+const effectMethods = ref([]);
+const openEffectMethodsDialog = (effect) => {
+  effectMethods.value = effect.methods;
+  showEffectMethodsDialog.value = true;
 };
 </script>
 
@@ -143,5 +134,6 @@ const deleteEffect = (index, data) => {
   overflow-x: hidden;
   border: 1px solid #dcdfe6;
   max-width: 800px;
+  border-radius: var(--el-border-radius-base);
 }
 </style>

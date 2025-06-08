@@ -90,7 +90,7 @@ watchEffect(() => {
   font-size: 18px;
   height: 50px;
   border-bottom: 1px solid #ccc;
-  background: #F2F2F2;
+  background: rgba(242, 242, 242, 0.4);
   display: flex;
   align-items: center;
   padding-left: 10px;

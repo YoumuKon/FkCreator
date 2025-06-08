@@ -15,6 +15,7 @@ import HeaderView from '@/views/HeaderView.vue';
   flex-direction: column;
   height: 100%;
   width: 100%;
+  background: linear-gradient(rgba(127, 143, 233, 0.14), rgba(67, 191, 233, 0.14));
 }
 
 .el-form-item {

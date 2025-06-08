@@ -27,7 +27,7 @@
     <el-form-item label="描述" prop="description">
       <el-input
         type="textarea"
-        :rows="3"
+        :rows="4"
         v-model="localValue.description"
         placeholder="这是一个刚创建的包，请添加相关信息"
       ></el-input>

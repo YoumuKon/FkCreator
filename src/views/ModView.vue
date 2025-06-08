@@ -40,8 +40,13 @@ const getKey = (type, currentNode) => {
   <div class="container">
     <template v-if="!currentMod">
       <div class="welcome-screen">
-        <h2>欢迎使用拓展包制作器！</h2>
-        <p>请先创建或加载一个工程。</p>
+        <img
+          src="@/assets/新月工坊.png"
+          alt="Logo"
+          style="width: 200px; height: auto; margin-bottom: 20px"
+        />
+        <h2>欢迎使用拓展包制作器</h2>
+        <p>请先新建或加载一个工程</p>
         <el-button-group>
           <el-button type="primary" size="large" @click="modStore.newMod()">新建工程</el-button>
           <el-button type="primary" size="large" @click="modStore.loadMod()">加载工程</el-button>
@@ -113,8 +118,8 @@ const getKey = (type, currentNode) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   width: 100%;
+  margin-bottom: 10vh;
 }
 
 .container {
@@ -141,7 +146,7 @@ const getKey = (type, currentNode) => {
   font-size: 18px;
   height: 50px;
   border-bottom: 1px solid #ccc;
-  background: #F2F2F2;
+  background: rgba(242, 242, 242, 0.4);
   user-select: none;
   padding: 0 1em;
 }
@@ -153,7 +158,6 @@ const getKey = (type, currentNode) => {
 
 .content {
   padding: 1em;
-  background: #fff;
   overflow-y: auto;
   height: calc(100% - 80px);
 }

@@ -1,20 +1,9 @@
 <template>
-  <el-dialog
-    :model-value="props.modelValue"
-    @close="close"
-    title="添加效果"
-    :close-on-click-modal="false"
-  >
+  <el-dialog :model-value="props.modelValue" @close="close" title="添加效果" :close-on-click-modal="false">
     <div class="effect-type-selector">
-      <h4>选择效果类型</h4>
+      <h4>效果类型</h4>
       <div class="effect-types">
-        <div
-          v-for="type in effectTypes"
-          :key="type.id"
-          class="effect-type-card"
-          :class="{ selected: selectedType === type.id }"
-          @click="selectType(type.id)"
-        >
+        <div v-for="type in effectTypes" :key="type.id" class="effect-type-card" :class="{ selected: selectedType === type.id }" @click="selectType(type)">
           <div class="type-info">
             <h5>{{ type.name }}</h5>
             <p>{{ type.description }}</p>
@@ -29,31 +18,20 @@
           <el-input v-model="effectRef.name" placeholder="输入效果名称" />
         </el-form-item>
         <el-form-item label="效果描述" prop="description">
-          <el-input
-            type="textarea"
-            v-model="effectRef.description"
-            placeholder="输入效果描述"
-            :rows="3"
-          />
+          <el-input type="textarea" v-model="effectRef.description" placeholder="输入效果描述" :rows="4" />
         </el-form-item>
       </el-form>
     </div>
     <template #footer>
       <el-button class="cancel-btn" @click="close">取消</el-button>
-      <el-button
-        class="confirm-btn"
-        type="primary"
-        @click="confirm"
-        :disabled="!selectedType || !effectRef.name"
-      >
-        确认
-      </el-button>
+      <el-button class="confirm-btn" type="primary" @click="confirm" :disabled="!selectedType || !effectRef.name"> 确认 </el-button>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { effectTypes } from '@/utils/effects.js';
 
 const props = defineProps({
   modelValue: {
@@ -67,37 +45,10 @@ const effectRef = ref({
 });
 const emit = defineEmits(['create', 'update:modelValue']);
 const selectedType = ref(null);
-const effectTypes = ref([
-  {
-    id: 'animation',
-    name: '动画效果',
-    description: '创建时间轴动画和过渡效果',
-    icon: 'fas fa-film'
-  },
-  {
-    id: 'interaction',
-    name: '交互效果',
-    description: '响应用户输入的交互效果',
-    icon: 'fas fa-hand-pointer'
-  },
-  {
-    id: 'data',
-    name: '数据处理',
-    description: '数据转换和处理流程',
-    icon: 'fas fa-database'
-  },
-  {
-    id: 'custom',
-    name: '自定义效果',
-    description: '从头开始创建自定义效果',
-    icon: 'fas fa-cogs'
-  }
-]);
-const selectType = (typeId) => {
-  selectedType.value = typeId;
+const selectType = (type) => {
+  selectedType.value = type.id;
   // 设置默认名称
-  const type = effectTypes.value.find((t) => t.id === typeId);
-  effectRef.value.name = `${type.name} ${new Date().getTime().toString().slice(-4)}`;
+  effectRef.value.name = `${type.name}效果_${new Date().getTime().toString().slice(-4)}`;
 };
 const close = () => {
   emit('update:modelValue', false);

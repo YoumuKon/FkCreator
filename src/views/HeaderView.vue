@@ -48,14 +48,17 @@ const handleSelect = (index) => {
     active-text-color="#ffd04b"
     @select="handleSelect"
   >
-    <el-menu-item index="/home" style="font-size: 1.2em">拓展包制作器</el-menu-item>
+    <el-menu-item index="/home" style="font-size: 1.2em">
+      <img src="@/assets/新月杀.png" alt="Logo" style="width: 30px; height: auto; margin-right: 10px;" />
+      拓展包制作器
+    </el-menu-item>
     <el-sub-menu>
       <template #title>工程管理</template>
       <el-menu-item index="@newMod">新建工程</el-menu-item>
       <el-menu-item index="@loadMod">加载工程</el-menu-item>
       <el-menu-item index="@saveMod">保存工程</el-menu-item>
     </el-sub-menu>
-    <el-menu-item index="@exportLua">导出Lua包</el-menu-item>
+    <el-menu-item index="@exportLua" v-if="modStore.currentMod">导出Lua包</el-menu-item>
     <el-menu-item index="/about">关于我们</el-menu-item>
   </el-menu>
 </template>
