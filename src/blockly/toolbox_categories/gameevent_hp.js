@@ -16,6 +16,14 @@ export default {
           }
         }
       }
-    }
+    },
+    {
+      type: 'lose_hp',
+      kind: 'block',
+    },
+    {
+      type: 'recover_hp',
+      kind: 'block',
+    },
   ]
 };

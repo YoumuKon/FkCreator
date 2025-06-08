@@ -11,7 +11,7 @@ export function createConfigurableBlock({
   args,
   colour,
   tooltip,
-  optionalFields, // [{ type: 'source', message: '来源', inputType: 'input_value', name: 'SOURCE', check: 'Player' }]
+  optionalFields = [], // [{ type: 'source', message: '来源', inputType: 'input_value', name: 'SOURCE', check: 'Player' }]
   dropdowns = {} // e.g. { DAMAGE_TYPE: [['普', 'normal'], ['火', 'fire']] }
 }) {
   const blockJson = {

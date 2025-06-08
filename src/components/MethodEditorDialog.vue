@@ -5,6 +5,7 @@
     </div>
     <template #footer>
       <div class="method-editor-buttons">
+        <el-button type="primary" @click="testMethod">Test</el-button>
         <el-button type="primary" @click="saveMethod">保存</el-button>
         <el-button type="danger" plain @click="resetToDefault">清空</el-button>
         <el-button type="warning" @click="closeMethod">关闭</el-button>
@@ -16,16 +17,36 @@
 import { nextTick, onMounted, ref, toRaw } from 'vue';
 import * as Blockly from 'blockly';
 import * as Zh from 'blockly/msg/zh-hans';
-import basic_blocks from '../blocks/basic.js';
-import card_blocks from '../blocks/blocks_card.js';
-import blocks_gameflow_hp from '@/blocks/blocks_gameflow_hp.js';
-import toolbox_server from '@/blocks/toolbox_server';
+import { luaGenerator, Order } from 'blockly/lua';
+import all_blocks from '../blockly/blocks/index.js';
+import loadCustomGenerators from '@/blockly/generators/index.js';
+import toolbox_server from '@/blockly/toolboxes/toolbox_server.js';
 import { ElMessageBox } from 'element-plus';
 
-Blockly.defineBlocksWithJsonArray(basic_blocks);
-Blockly.defineBlocksWithJsonArray(card_blocks);
-Blockly.defineBlocksWithJsonArray(blocks_gameflow_hp);
+Blockly.defineBlocksWithJsonArray(all_blocks);
 Blockly.setLocale(Zh);
+loadCustomGenerators();
+// 当需要弹出param工具栏时，都临时创建一个block类别，然后将那个block放进去
+const methodParamsCallback = function (workspace) {
+  const blockList = [];
+  workspace.localMethod.params.forEach((v) => {
+    const blkType = 'param_get_' + v.name;
+    Blockly.defineBlocksWithJsonArray([
+      {
+        type: blkType,
+        message0: v.message,
+        output: v.type,
+        colour: 112 // TODO 颜色换个好看点的
+      }
+    ]);
+    luaGenerator.forBlock[blkType] = () => [v.name, Order.ATOMIC];
+    blockList.push({
+      kind: 'block',
+      type: blkType
+    });
+  });
+  return blockList;
+};
 
 const props = defineProps({
   modelValue: {
@@ -66,7 +87,7 @@ const closeMethod = () => {
 
 const initBlockly = () => {
   workspace.value = Blockly.inject(blocklyDiv.value, {
-    media: 'https://unpkg.com/blockly@10.0.0/media/',
+    // media: 'https://unpkg.com/blockly@10.0.0/media/',
     toolbox: toolbox_server,
     scrollbars: true,
     trashcan: true,
@@ -81,7 +102,16 @@ const initBlockly = () => {
       pinch: true
     }
   });
+  const rawWorkspace = toRaw(workspace.value);
   localMethod.value = JSON.parse(JSON.stringify(props.data));
+  // console.log(toRaw(localMethod.value))
+  localMethod.value.params.forEach((v) => {
+    console.log(v.name);
+  });
+
+  rawWorkspace.localMethod = localMethod.value;
+  rawWorkspace.registerToolboxCategoryCallback('METHOD_PARAMS', methodParamsCallback);
+
   // 加载已有块
   workspace.value.addChangeListener(onBlocklyChange);
   if (localMethod.value.blocksJson) {
@@ -109,6 +139,10 @@ const onBlocklyChange = (event) => {
       Blockly.Events.enable();
     }
   }
+};
+const testMethod = () => {
+  const rawWorkspace = toRaw(workspace.value);
+  console.log(luaGenerator.workspaceToCode(rawWorkspace));
 };
 const saveMethod = () => {
   const rawWorkspace = toRaw(workspace.value);

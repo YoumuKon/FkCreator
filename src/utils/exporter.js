@@ -76,6 +76,19 @@ Fk:loadTranslationTable {
   [":${skill.internal_name}"] = "${skill.description}",
 }\n\n`;
 
+  skill.effects.forEach(effect => {
+    luaCode += `_skill_val:addEffect('${effect.type}, {\n`;
+    effect.methods.forEach(m => {
+      if (!m.blockData) return;
+      luaCode += `  ${m.name} = function(`;
+      // TODO fill params
+      luaCode += ')\n';
+      // TODO generate code from blockData, remember to add 4 space before every line
+      luaCode += '  end,\n'
+    });
+    luaCode += `})\n\n`;
+  });
+
   luaCode += 'return _skill_val\n';
   return luaCode;
 };

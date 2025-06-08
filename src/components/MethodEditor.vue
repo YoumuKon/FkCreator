@@ -14,12 +14,12 @@
 <script>
 import * as Blockly from 'blockly';
 import * as Zh from 'blockly/msg/zh-hans';
-import basic_blocks from '../blocks/basic.js';
-import card_blocks from '../blocks/blocks_card.js';
-import blocks_gameflow_hp from '@/blocks/blocks_gameflow_hp.js';
+import basic_blocks from '../blockly/blocks/basic.js';
+import card_blocks from '../blockly/blocks/card.js';
+import blocks_gameflow_hp from '@/blockly/blocks/gameevent_hp.js';
 import { toRaw } from 'vue';
 
-import toolbox_server from '@/blocks/toolbox_server';
+import toolbox_server from '@/blockly/toolboxes/toolbox_server.js';
 
 Blockly.defineBlocksWithJsonArray(basic_blocks);
 Blockly.defineBlocksWithJsonArray(card_blocks);

@@ -1,3 +1,12 @@
+/* TODO 通用effect字段
+  ---@class SkillSpec
+  ---@field public name? string @ 技能名
+  ---@field public mute? boolean @ 决定是否关闭技能配音
+  ---@field public no_indicate? boolean @ 决定是否关闭技能指示线
+  ---@field public anim_type? string|AnimationType @ 技能类型定义
+  ---@field public global? boolean @ 决定是否是全局技能
+*/
+
 export const effectTypes = [
   {
     id: 'distance',
@@ -6,25 +15,189 @@ export const effectTypes = [
     template: {
       methods: [
         {
-          name: 'test1',
-          description: '这是距离类自动生成的测试方法',
+          name: 'correct_func',
+          description: '修改从from到to的距离计算值，返回一个数，正数表示增加距离计算，负数反之',
           type: 'client',
           params: [
             {
               name: 'self',
+              message: '本技能',
               type: 'TargetModSkill'
-            }
+            },
+            {
+              name: 'from',
+              message: '来源角色',
+              type: 'Player'
+            },
+            {
+              name: 'to',
+              message: '目标角色',
+              type: 'Player'
+            },
           ],
           ret: 'number',
           blockData: null
-        }
+        },
+        {
+          name: 'fixed_func',
+          description: '将from到to的距离设为固定值，返回的数值即为新距离',
+          type: 'client',
+          params: [
+            {
+              name: 'self',
+              message: '本技能',
+              type: 'TargetModSkill'
+            },
+            {
+              name: 'from',
+              message: '来源角色',
+              type: 'Player'
+            },
+            {
+              name: 'to',
+              message: '目标角色',
+              type: 'Player'
+            },
+          ],
+          ret: 'number',
+          blockData: null
+        },
       ]
     }
   },
   {
     id: 'prohibit',
     name: '禁止类',
-    description: '用于禁止某角色成为某卡牌目标',
+    description: '用于禁止某角色成为某卡牌目标、禁止使用打出弃置拼点',
+    template: {
+      methods: [
+        {
+          name: 'is_prohibited',
+          description: '令from不能使用card指定to为目标',
+          type: 'client',
+          params: [
+            {
+              name: 'self',
+              message: '本技能',
+              type: 'ProhibitSkill'
+            },
+            {
+              name: 'from',
+              message: '来源角色',
+              type: 'Player'
+            },
+            {
+              name: 'to',
+              message: '目标角色',
+              type: 'Player'
+            },
+            {
+              name: 'card',
+              message: '相关卡牌',
+              type: 'Card'
+            },
+          ],
+          ret: 'bool',
+          blockData: null
+        },
+        {
+          name: 'prohibit_use',
+          description: '令player不能使用card',
+          type: 'client',
+          params: [
+            {
+              name: 'self',
+              message: '本技能',
+              type: 'ProhibitSkill'
+            },
+            {
+              name: 'player',
+              message: '相关角色',
+              type: 'Player'
+            },
+            {
+              name: 'card',
+              message: '相关卡牌',
+              type: 'Card'
+            },
+          ],
+          ret: 'bool',
+          blockData: null
+        },
+        {
+          name: 'prohibit_response',
+          description: '令player不能打出card',
+          type: 'client',
+          params: [
+            {
+              name: 'self',
+              message: '本技能',
+              type: 'ProhibitSkill'
+            },
+            {
+              name: 'player',
+              message: '相关角色',
+              type: 'Player'
+            },
+            {
+              name: 'card',
+              message: '相关卡牌',
+              type: 'Card'
+            },
+          ],
+          ret: 'bool',
+          blockData: null
+        },
+        {
+          name: 'prohibit_discard',
+          description: '令player不能弃置card',
+          type: 'client',
+          params: [
+            {
+              name: 'self',
+              message: '本技能',
+              type: 'ProhibitSkill'
+            },
+            {
+              name: 'player',
+              message: '相关角色',
+              type: 'Player'
+            },
+            {
+              name: 'card',
+              message: '相关卡牌',
+              type: 'Card'
+            },
+          ],
+          ret: 'bool',
+          blockData: null
+        },
+        {
+          name: 'prohibit_pindian',
+          description: '令from不能对to拼点',
+          type: 'client',
+          params: [
+            {
+              name: 'self',
+              message: '本技能',
+              type: 'ProhibitSkill'
+            },
+            {
+              name: 'from',
+              message: '来源角色',
+              type: 'Player'
+            },
+            {
+              name: 'to',
+              message: '目标角色',
+              type: 'Player'
+            },
+          ],
+          ret: 'bool',
+          blockData: null
+        },
+      ],
+    }
   },
   {
     id: 'atkrange',
