@@ -1,5 +1,7 @@
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import * as Blockly from 'blockly';
+import { luaGenerator, Order } from 'blockly/lua';
 
 // 生成最外面的那个init，对应整个大mod
 const generateModCode = (mod) => {
@@ -59,6 +61,21 @@ Fk:loadTranslationTable { ["${pkg.internal_name}"] = "${pkg.name}" }\n\n`;
   return luaCode;
 };
 
+const defineParamBlocks = (params) => {
+  params.forEach((v) => {
+    const blkType = 'param_get_' + v.name;
+    Blockly.defineBlocksWithJsonArray([
+      {
+        type: blkType,
+        message0: v.message,
+        output: v.type,
+        colour: 112 // TODO 颜色换个好看点的
+      }
+    ]);
+    luaGenerator.forBlock[blkType] = () => [v.name, Order.ATOMIC];
+  });
+}
+
 // 生成packages/$MOD/pkg/$PKG/skills/$SKILL.lua
 const generateSkillCode = (skill) => {
   let luaCode = `--[[
@@ -77,13 +94,20 @@ Fk:loadTranslationTable {
 }\n\n`;
 
   skill.effects.forEach(effect => {
-    luaCode += `_skill_val:addEffect('${effect.type}, {\n`;
+    luaCode += `_skill_val:addEffect('${effect.type}', {\n`;
     effect.methods.forEach(m => {
-      if (!m.blockData) return;
+      if (!m.blocksState) return;
       luaCode += `  ${m.name} = function(`;
-      // TODO fill params
+      luaCode += m.params.map(p => p.name).join(', ');
       luaCode += ')\n';
-      // TODO generate code from blockData, remember to add 4 space before every line
+      defineParamBlocks(m.params);
+
+      const tempWorkspace = new Blockly.Workspace();
+      Blockly.serialization.workspaces.load(m.blocksState, tempWorkspace);
+      const code = luaGenerator.workspaceToCode(tempWorkspace);
+      const indentedCode = code.split('\n').map(line => line ? '    ' + line : line).join('\n');
+      luaCode += indentedCode;
+      tempWorkspace.dispose();
       luaCode += '  end,\n'
     });
     luaCode += `})\n\n`;

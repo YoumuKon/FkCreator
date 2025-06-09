@@ -30,31 +30,16 @@
 <script setup>
 import { nextTick, onMounted, ref, toRaw } from 'vue';
 import * as Blockly from 'blockly';
-import * as Zh from 'blockly/msg/zh-hans';
 import { luaGenerator, Order } from 'blockly/lua';
-import all_blocks from '../blockly/blocks/index.js';
-import loadCustomGenerators from '@/blockly/generators/index.js';
 import toolbox_server from '@/blockly/toolboxes/toolbox_server.js';
 import { ElMessageBox } from 'element-plus';
 import { copyTextToClip } from '@/utils/web.js';
 
-Blockly.defineBlocksWithJsonArray(all_blocks);
-Blockly.setLocale(Zh);
-loadCustomGenerators();
 // 当需要弹出param工具栏时，都临时创建一个block类别，然后将那个block放进去
 const methodParamsCallback = function (workspace) {
   const blockList = [];
   workspace.localMethod.params.forEach((v) => {
     const blkType = 'param_get_' + v.name;
-    Blockly.defineBlocksWithJsonArray([
-      {
-        type: blkType,
-        message0: v.message,
-        output: v.type,
-        colour: 112 // TODO 颜色换个好看点的
-      }
-    ]);
-    luaGenerator.forBlock[blkType] = () => [v.name, Order.ATOMIC];
     blockList.push({
       kind: 'block',
       type: blkType
@@ -121,6 +106,18 @@ const initBlockly = () => {
   localMethod.value = JSON.parse(JSON.stringify(props.data));
   rawWorkspace.localMethod = localMethod.value;
   rawWorkspace.registerToolboxCategoryCallback('METHOD_PARAMS', methodParamsCallback);
+  localMethod.value.params.forEach((v) => {
+    const blkType = 'param_get_' + v.name;
+    Blockly.defineBlocksWithJsonArray([
+      {
+        type: blkType,
+        message0: v.message,
+        output: v.type,
+        colour: 112 // TODO 颜色换个好看点的
+      }
+    ]);
+    luaGenerator.forBlock[blkType] = () => [v.name, Order.ATOMIC];
+  });
 
   // 加载已有块
   workspace.value.addChangeListener(onBlocklyChange);
@@ -162,8 +159,8 @@ const saveMethod = () => {
   const rawWorkspace = toRaw(workspace.value);
   localMethod.value.blocksState = Blockly.serialization.workspaces.save(rawWorkspace);
   emit('save', {
-    blocksState: localMethod.value.blocksState,
-    blocksCode: luaGenerator.workspaceToCode(rawWorkspace)
+    blocksState: localMethod.value.blocksState
+    // blocksCode: luaGenerator.workspaceToCode(rawWorkspace)
   });
 };
 const resetToDefault = () => {
