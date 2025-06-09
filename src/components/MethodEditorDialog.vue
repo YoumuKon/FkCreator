@@ -26,6 +26,10 @@
       </div>
     </template>
     <pre v-highlight><code>{{ code }}</code></pre>
+    <template #footer>
+      <el-button type="primary" @click="copyTextToClip(code, '代码复制成功！')">复制</el-button>
+      <el-button type="danger" @click="showCodeDialog = false">关闭</el-button>
+    </template>
   </el-dialog>
 </template>
 <script setup>
@@ -37,6 +41,7 @@ import all_blocks from '../blockly/blocks/index.js';
 import loadCustomGenerators from '@/blockly/generators/index.js';
 import toolbox_server from '@/blockly/toolboxes/toolbox_server.js';
 import { ElMessageBox } from 'element-plus';
+import { copyTextToClip } from '@/utils/web.js';
 
 Blockly.defineBlocksWithJsonArray(all_blocks);
 Blockly.setLocale(Zh);
