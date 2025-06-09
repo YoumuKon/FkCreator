@@ -1,8 +1,8 @@
 <template>
   <el-form label-width="80px" :model="localValue" :rules="formRules">
     <el-row :gutter="10">
-      <el-col :span="12"
-        ><el-form-item prop="name">
+      <el-col :span="12">
+        <el-form-item prop="name">
           <template #label>
             <span>Mod名称</span>
             <span class="remark">（长度限制20）</span>
@@ -16,11 +16,7 @@
             <span>内部名称（code）</span>
             <span class="remark">（长度限制60）</span>
           </template>
-          <el-input
-            v-model="localValue.internal_name"
-            placeholder="请输入内部名称"
-            maxlength="60"
-          ></el-input>
+          <el-input v-model="localValue.internal_name" placeholder="请输入内部名称" maxlength="60"></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -35,12 +31,7 @@
       <el-input v-model="localValue.version" placeholder="请输入版本号" maxlength="20"></el-input>
     </el-form-item>
     <el-form-item label="描述" prop="description">
-      <el-input
-        type="textarea"
-        :rows="4"
-        v-model="localValue.description"
-        placeholder="这是一个刚创建的mod，请添加相关信息"
-      ></el-input>
+      <el-input type="textarea" :rows="4" v-model="localValue.description" placeholder="这是一个刚创建的mod，请添加相关信息"></el-input>
     </el-form-item>
   </el-form>
 </template>
@@ -77,9 +68,9 @@ const formRules = reactive({
 });
 </script>
 
-<style>
+<style scoped>
 .remark {
   font-size: 0.8em;
-  color: #888;
+  color: var(--el-button-border-color);
 }
 </style>

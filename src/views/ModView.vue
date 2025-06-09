@@ -101,6 +101,7 @@ window.addEventListener('beforeunload', function (e) {
   justify-content: center;
   width: 100%;
   margin-bottom: 10vh;
+  color: var(--text-color-title);
 }
 
 .container {
@@ -127,7 +128,8 @@ window.addEventListener('beforeunload', function (e) {
   font-size: 18px;
   height: 50px;
   border-bottom: 1px solid #ccc;
-  background: rgba(242, 242, 242, 0.4);
+  background: rgba(100, 100, 100, 0.2);
+  backdrop-filter: blur(8px);
   user-select: none;
   padding: 0 1em;
 }
@@ -135,6 +137,7 @@ window.addEventListener('beforeunload', function (e) {
 .content-label {
   font-size: 1.2rem;
   font-weight: bold;
+  color: var(--text-color-title);
 }
 
 .content {

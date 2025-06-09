@@ -11,6 +11,6 @@
   align-items: center;
   height: 100vh;
   font-size: 2em;
-  color: #333;
+  color: var(--text-color-title);
 }
 </style>

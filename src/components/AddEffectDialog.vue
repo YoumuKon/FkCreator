@@ -80,14 +80,14 @@ const resetForm = () => {
 .effect-config h4 {
   margin-top: 0;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--text-color-title);
   font-size: 1rem;
   text-shadow:
     0 0 0.4px rgba(0, 0, 0, 0.5),
     0 0 0.4px rgba(0, 0, 0, 0.5),
     0 0 0.4px rgba(0, 0, 0, 0.5);
   border-left: #4a90e2 3px solid;
-  background-color: #eee;
+  background-color: var(--selected-background-color);
   padding: 4px 8px;
   border-radius: 4px;
 }
@@ -120,13 +120,13 @@ const resetForm = () => {
 
 .effect-type-card.selected {
   border-color: #4a90e2;
-  background-color: #f5f9ff;
+  background-color: var(--hover-background-color);
 }
 
 .type-info h5 {
   margin: 0 0 8px 0;
-  color: #333;
   font-size: 1rem;
+  color: var(--text-color-title);
   text-shadow:
     0 0 0.4px rgba(0, 0, 0, 0.5),
     0 0 0.4px rgba(0, 0, 0, 0.5),
@@ -135,7 +135,6 @@ const resetForm = () => {
 
 .type-info p {
   margin: 0;
-  color: #666;
   font-size: 0.9rem;
 }
 </style>

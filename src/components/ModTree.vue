@@ -2,11 +2,7 @@
   <div class="tree-title">拓展包结构树</div>
   <ul class="tree">
     <li v-if="props.mod">
-      <div
-        class="tree-node"
-        :class="{ selected: selectedId === props.mod.id }"
-        @click="select('mod', props.mod)"
-      >
+      <div class="tree-node" :class="{ selected: selectedId === props.mod.id }" @click="select('mod', props.mod)">
         <span class="tree-icon">
           <Folder></Folder>
         </span>
@@ -14,11 +10,7 @@
       </div>
       <ul v-if="mod.packages.length" class="subtree">
         <li v-for="pkg in mod.packages" :key="pkg.id">
-          <div
-            class="tree-node"
-            :class="{ selected: selectedId === pkg.id }"
-            @click="select('package', pkg)"
-          >
+          <div class="tree-node" :class="{ selected: selectedId === pkg.id }" @click="select('package', pkg)">
             <span class="tree-icon">
               <Package></Package>
             </span>
@@ -26,11 +18,7 @@
           </div>
           <ul v-if="pkg.generals.length || pkg.skills.length" class="subtree">
             <li v-for="general in pkg.generals" :key="general.id">
-              <div
-                class="tree-node"
-                :class="{ selected: selectedId === general.id }"
-                @click="select('general', general)"
-              >
+              <div class="tree-node" :class="{ selected: selectedId === general.id }" @click="select('general', general)">
                 <span class="tree-icon">
                   <Legend></Legend>
                 </span>
@@ -39,11 +27,7 @@
             </li>
 
             <li v-for="skill in pkg.skills" :key="skill.id">
-              <div
-                class="tree-node"
-                :class="{ selected: selectedId === skill.id }"
-                @click="select('skill', skill)"
-              >
+              <div class="tree-node" :class="{ selected: selectedId === skill.id }" @click="select('skill', skill)">
                 <span class="tree-icon">
                   <Skill></Skill>
                 </span>
@@ -90,7 +74,9 @@ watchEffect(() => {
   font-size: 18px;
   height: 50px;
   border-bottom: 1px solid #ccc;
-  background: rgba(242, 242, 242, 0.4);
+  background: rgba(100, 100, 100, 0.2);
+  backdrop-filter: blur(8px);
+  color: var(--text-color-title);
   display: flex;
   align-items: center;
   padding-left: 10px;
@@ -120,11 +106,11 @@ ul {
 }
 
 .tree-node:hover {
-  background: #f0f0f0;
+  background: var(--hover-background-color);
 }
 
 .tree-node.selected {
-  background: #e0e0e0;
+  background: var(--selected-background-color);
   font-weight: bold;
 }
 

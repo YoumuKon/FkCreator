@@ -97,10 +97,10 @@ const formRules = reactive({
 });
 </script>
 
-<style>
+<style scoped>
 .remark {
   font-size: 0.8em;
-  color: #888;
+  color: var(--el-button-border-color);
 }
 
 .number-input {

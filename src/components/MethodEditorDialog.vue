@@ -197,6 +197,10 @@ const resetToDefault = () => {
   padding: 10px;
 }
 
+.dialog-title {
+  color: var(--text-color-title);
+}
+
 .blockly-container {
   height: calc(100vh - 168px);
   width: 100%;
@@ -217,5 +221,24 @@ const resetToDefault = () => {
 
 code {
   height: 40vh;
+}
+
+.blocklyToolboxCategory {
+  cursor: pointer;
+  display: flex;
+  padding: 2px 0;
+  align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  .blocklySvg{
+    background-color: #222;
+  }
+  .blocklyToolbox {
+    background-color: #333;
+  }
+  .blocklyFlyoutBackground{
+    fill: #333;
+  }
 }
 </style>

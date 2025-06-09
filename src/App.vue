@@ -25,7 +25,6 @@ import HeaderView from '@/views/HeaderView.vue';
 .el-form-item .el-form-item__label {
   width: 100% !important;
   justify-content: left !important;
-  color: #333 !important;
   font-size: 1.01em;
   text-shadow:
     0 0 0.4px rgba(0, 0, 0, 0.5),

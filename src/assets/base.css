@@ -1,10 +1,20 @@
 @import './font.css';
 
-:root {
-  font-family: "AlimamaFangYuan", serif !important;
-  --el-component-size: 40px !important;
-  --el-font-size-base: 15px !important;
-  --el-border-radius-base: 8px !important;
+* {
+  font-family: "AlimamaFangYuan", serif;
+  --text-color-title: #222;
+  --selected-background-color: #D0D0D0;
+  --hover-background-color: #E2E2E2;
+  --el-component-size: 40px;
+  --el-font-size-base: 15px;
+  --el-border-radius-base: 8px;
+  --el-text-color-regular: #555;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f2f2f2;
+}
+
+body {
+  background-color: #f2f2f2;
 }
 
 .el-form-item__content {
@@ -13,4 +23,32 @@
 
 .el-select__wrapper {
   min-height: 40px !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #222;
+  }
+
+  * {
+    --text-color-title: #f2f2f2;
+    --selected-background-color: #555;
+    --hover-background-color: #626262;
+    --el-input-bg-color: #333;
+    --el-input-text-color: #f2f2f2;
+    --el-input-placeholder-color: #999;
+    --el-fill-color-blank: #333;
+    --el-bg-color: #383838;
+    --color-text: #ccc;
+    --el-text-color-primary: #ccc;
+    --el-text-color-regular: #eee;
+    --el-button-bg-color: #222;
+    --el-button-disabled-bg-color: #444;
+    --el-fill-color-light: #555;
+    --el-skeleton-color: #444;
+    --el-skeleton-to-color: #333;
+    --el-bg-color-overlay: #222;
+    scrollbar-width: thin;
+    scrollbar-color: #f2f2f2 #888;
+  }
 }

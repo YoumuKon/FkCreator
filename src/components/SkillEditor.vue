@@ -29,7 +29,7 @@
           <el-button type="primary" @click="showAddEffectDialog = true">添加效果</el-button>
         </el-col>
         <el-col :span="24">
-          <el-table :data="localValue.effects" border stripe class="table">
+          <el-table :data="localValue.effects" border class="table">
             <el-table-column prop="name" label="效果名" min-width="100" />
             <el-table-column prop="description" label="描述" min-width="200">
               <template #default="scope">
@@ -121,10 +121,10 @@ const openEffectMethodsDialog = (effect) => {
 };
 </script>
 
-<style>
+<style scoped>
 .remark {
   font-size: 0.8em;
-  color: #888;
+  color: var(--el-button-border-color);
 }
 
 .table {
