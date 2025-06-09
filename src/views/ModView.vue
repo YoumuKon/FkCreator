@@ -46,7 +46,7 @@ window.addEventListener('beforeunload', function (e) {
   <div class="container">
     <template v-if="!currentMod">
       <div class="welcome-screen">
-        <img src="@/assets/新月工坊.png" alt="Logo" style="width: 200px; height: auto; margin-bottom: 20px" />
+        <img src="../assets/logo.png" alt="Logo" style="width: 200px; height: auto; margin-bottom: 20px" />
         <h2>欢迎使用拓展包制作器</h2>
         <p>请先新建或加载一个项目</p>
         <el-button-group>

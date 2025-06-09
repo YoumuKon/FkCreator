@@ -40,7 +40,7 @@ const handleSelect = (index) => {
 <template>
   <el-menu :default-active="activeIndex" :ellipsis="false" class="el-menu-demo" mode="horizontal" background-color="#707e9c" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
     <el-menu-item index="/home" style="font-size: 1.2em">
-      <img src="@/assets/新月杀.png" alt="Logo" style="width: 30px; height: auto; margin-right: 10px" />
+      <img src="@/assets/favicon.png" alt="Logo" style="width: 30px; height: auto; margin-right: 10px" />
       拓展包制作器
     </el-menu-item>
     <el-menu-item v-if="modStore.currentMod" index="/mod">返回项目</el-menu-item>
