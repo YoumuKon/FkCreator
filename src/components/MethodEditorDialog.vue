@@ -225,6 +225,11 @@ code {
   align-items: center;
 }
 
+/* 下拉框无法显示，抬一下z */
+.blocklyDropDownDiv {
+  z-index: 9999;
+}
+
 @media (prefers-color-scheme: dark) {
   .blocklySvg {
     background-color: #222;
