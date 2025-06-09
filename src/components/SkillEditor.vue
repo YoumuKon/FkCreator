@@ -132,8 +132,6 @@ const openEffectMethodsDialog = (effect) => {
   height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
-  border: 1px solid #dcdfe6;
   max-width: 800px;
-  border-radius: var(--el-border-radius-base);
 }
 </style>

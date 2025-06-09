@@ -31,4 +31,12 @@ import HeaderView from '@/views/HeaderView.vue';
     0 0 0.4px rgba(0, 0, 0, 0.5),
     0 0 0.4px rgba(0, 0, 0, 0.5);
 }
+
+.el-table {
+  border-radius: var(--el-border-radius-base) !important;
+}
+
+.el-table .el-table__inner-wrapper {
+  border-radius: var(--el-border-radius-base) !important;
+}
 </style>
