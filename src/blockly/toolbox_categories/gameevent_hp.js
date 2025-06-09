@@ -19,11 +19,45 @@ export default {
     },
     {
       type: 'lose_hp',
-      kind: 'block'
+      kind: 'block',
+      inputs: {
+        AMOUNT: {
+          shadow: {
+            type: 'math_number',
+            fields: {
+              NUM: 1
+            }
+          }
+        }
+      }
     },
     {
       type: 'recover_hp',
-      kind: 'block'
+      kind: 'block',
+      inputs: {
+        AMOUNT: {
+          shadow: {
+            type: 'math_number',
+            fields: {
+              NUM: 1
+            }
+          }
+        }
+      }
+    },
+    {
+      type: 'change_maxhp',
+      kind: 'block',
+      inputs: {
+        AMOUNT: {
+          shadow: {
+            type: 'math_number',
+            fields: {
+              NUM: 1
+            }
+          }
+        }
+      }
     }
   ]
 };
