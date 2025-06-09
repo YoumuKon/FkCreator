@@ -1,5 +1,13 @@
 <script setup>
 import HeaderView from '@/views/HeaderView.vue';
+import * as Blockly from 'blockly';
+import * as Zh from 'blockly/msg/zh-hans';
+import all_blocks from '@/blockly/blocks/index.js';
+import loadCustomGenerators from '@/blockly/generators/index.js';
+
+Blockly.defineBlocksWithJsonArray(all_blocks);
+Blockly.setLocale(Zh);
+loadCustomGenerators();
 </script>
 
 <template>

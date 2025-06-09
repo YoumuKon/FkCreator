@@ -20,7 +20,7 @@
 运行以下命令可初始化项目：
 
 ```sh
-$ yarn
+$ yarn install --frozen-lockfile
 ```
 
 在开发环境下运行，支持实时预览以及代码热更新：

@@ -47,5 +47,6 @@ export const createNewEffect = (effectData) => {
   const ret = {};
   ret.name = effectData.name;
   ret.description = effectData.description;
+  ret.type = effectData.type;
   return ret;
 };

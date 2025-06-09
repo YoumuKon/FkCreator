@@ -37,7 +37,7 @@ export function createConfigurableBlock({
     },
     domToMutation(xmlElement) {
       optionalFields.forEach((field) => {
-        this[`has_${field.name}_`] = xmlElement.getAttribute(`has_${field.name}`) === 'true';
+        this[`has_${field.name}_`] = xmlElement.getAttribute(`has_${field.name.toLowerCase()}`) === 'true';
       });
       this.updateShape_();
     },
@@ -77,11 +77,12 @@ export function createConfigurableBlock({
     },
     updateShape_() {
       optionalFields.forEach((field) => {
-        if (this.getInput(field.name)) {
-          //this.removeInput(field.name);
+        const hasField = this[`has_${field.name}_`];
+        if (!hasField && this.getInput(field.name)) {
+          this.removeInput(field.name);
           return;
         }
-        if (this[`has_${field.name}_`]) {
+        if (hasField && !this.getInput(field.name)) {
           let input;
           if (field.inputType === 'input_value') {
             input = this.appendValueInput(field.name)
