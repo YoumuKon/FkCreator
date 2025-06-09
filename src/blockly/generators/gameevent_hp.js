@@ -33,7 +33,7 @@ export default () => {
     const target = generator.valueToCode(block, 'TARGET', Order.ATOMIC) || 'nil';
     // TODO if target is nil, error (must have target)
     const amount = generator.valueToCode(block, 'AMOUNT', Order.ATOMIC);
-    let code = `room:damage {\n  who = ${target},\n  num = ${amount},\n`;
+    let code = `room:recover {\n  who = ${target},\n  num = ${amount},\n`;
 
     // 因为是可选input 需要写判断
     if (block.getInput('SOURCE')) {
