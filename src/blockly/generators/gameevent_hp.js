@@ -15,7 +15,7 @@ export default () => {
     if (block.getInput('DAMAGE_TYPE')) {
       const dmgtype = generator.getFieldValue(block, 'DAMAGE_TYPE', Order.ATOMIC) || 'normal_damage';
       // TODO Damage.Fire
-      code += `  nature = "${dmgtype}",\n`;
+      code += `  nature = ${dmgtype},\n`;
     }
 
     code += '}\n';
