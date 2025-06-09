@@ -20,10 +20,10 @@ const damageBlocks = createConfigurableBlock({
   ],
   dropdowns: {
     DAMAGE_TYPE: [
-      ['普', 'fk.NormalDamage'],
-      ['火', 'fk.ThunderDamage'],
-      ['雷', 'fk.FireDamage'],
-      ['冰', 'fk.IceDamage']
+      ['普', 'NormalDamage'],
+      ['火', 'ThunderDamage'],
+      ['雷', 'FireDamage'],
+      ['冰', 'IceDamage']
     ]
   }
 });
