@@ -19,13 +19,8 @@
       <p>@ Powr By Blockly</p>
     </div>
   </el-dialog>
-  <el-dialog v-model="showCodeDialog">
-    <template #header>
-      <div class="dialog-header">
-        <div class="dialog-title">预览Lua代码</div>
-      </div>
-    </template>
-    <pre v-highlight><code>{{ code }}</code></pre>
+  <el-dialog v-model="showCodeDialog" title="预览Lua代码" :close-on-click-modal="false" :show-close="true" width="80%" append-to-body>
+    <pre v-highlight><code class="lua">{{ code }}</code></pre>
     <template #footer>
       <el-button type="primary" @click="copyTextToClip(code, '代码复制成功！')">复制</el-button>
       <el-button type="danger" @click="showCodeDialog = false">关闭</el-button>
@@ -221,6 +216,9 @@ const resetToDefault = () => {
 
 code {
   height: 40vh;
+  border: 1px solid var(--selected-background-color);
+  border-radius: var(--el-border-radius-base);
+  font-family: Consolas, 'Courier New', Courier, monospace !important;
 }
 
 .blocklyToolboxCategory {
@@ -231,13 +229,15 @@ code {
 }
 
 @media (prefers-color-scheme: dark) {
-  .blocklySvg{
+  .blocklySvg {
     background-color: #222;
   }
+
   .blocklyToolbox {
     background-color: #333;
   }
-  .blocklyFlyoutBackground{
+
+  .blocklyFlyoutBackground {
     fill: #333;
   }
 }

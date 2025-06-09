@@ -7,11 +7,7 @@
             <span>武将姓名</span>
             <span class="remark">（长度限制20）</span>
           </template>
-          <el-input
-            v-model="localValue.name"
-            placeholder="请输入武将名称"
-            maxlength="20"
-          ></el-input>
+          <el-input v-model="localValue.name" placeholder="请输入武将名称" maxlength="20"></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
@@ -20,11 +16,7 @@
             <span>内部名称（code）</span>
             <span class="remark">（长度限制60）</span>
           </template>
-          <el-input
-            v-model="localValue.internal_name"
-            placeholder="请输入内部名称"
-            maxlength="60"
-          ></el-input>
+          <el-input v-model="localValue.internal_name" placeholder="请输入内部名称" maxlength="60"></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -43,21 +35,47 @@
         <el-input-number v-model="localValue.maxHp"></el-input-number>
       </el-form-item>
     </el-row>
-    <el-form-item label="技能">
-      <el-select v-model="localValue.skills" multiple placeholder="请选择技能">
-        <el-option
-          v-for="skill in localValue.availableSkills"
-          :key="skill"
-          :label="skill"
-          :value="skill"
-        />
-      </el-select>
+    <el-form-item label="绑定技能">
+      <el-autocomplete v-model="skillSearch" :fetch-suggestions="querySkillSearch" placeholder="请输入技能名称 或 技能内部名称" @select="handleSkillSelect">
+        <template #append>
+          <el-button @click="addCustomSkill(skillSearch)">
+            <span>直接添加<span class="info">（非本扩展包技能）</span></span>
+          </el-button>
+        </template>
+        <template #loading>
+          <el-icon class="is-loading">
+            <svg class="circular" viewBox="0 0 20 20">
+              <g class="path2 loading-path" stroke-width="0" style="animation: none; stroke: none">
+                <circle r="3.375" class="dot1" rx="0" ry="0" />
+                <circle r="3.375" class="dot2" rx="0" ry="0" />
+                <circle r="3.375" class="dot4" rx="0" ry="0" />
+                <circle r="3.375" class="dot3" rx="0" ry="0" />
+              </g>
+            </svg>
+          </el-icon>
+        </template>
+        <template #default="{ item }">
+          <span>{{ item.name }} ({{ item.internal_name }})</span>
+        </template>
+      </el-autocomplete>
+      <div class="tips">（如需添加本扩展包技能，请在下拉搜索结果中点击；否则请点击“直接添加”）</div>
+      <div class="skill-list">
+        <template v-for="skill in localValue.skills" :key="skill">
+          <el-tag size="large" type="success" closable @close="localValue.skills.splice(localValue.skills.indexOf(skill), 1)">
+            <span v-html="getSkillLabel(skill)"></span>
+          </el-tag>
+        </template>
+      </div>
     </el-form-item>
   </el-form>
 </template>
 
 <script setup>
 import { reactive, ref, watchEffect } from 'vue';
+import { useModStore } from '@/stores/mod.js';
+import { ElMessage, ElMessageBox } from 'element-plus';
+
+const modStore = useModStore();
 
 const { modelValue } = defineProps({
   modelValue: {
@@ -95,6 +113,72 @@ const formRules = reactive({
   gender: [{ required: true, message: '性别不能为空', trigger: 'change' }],
   hp: [{ validator: validateHp, trigger: 'change' }]
 });
+
+const skillSearch = ref('');
+const querySkillSearch = (queryString, cb) => {
+  const results = [];
+  if (!queryString) {
+    cb(results);
+    return;
+  }
+  const mod = modStore.currentMod;
+  for (let i = 0; i < mod.packages.length; i++) {
+    const pkg = mod.packages[i];
+    const skills = pkg.skills;
+    if (skills) {
+      for (let j = 0; j < skills.length; j++) {
+        const skill = skills[j];
+        if (skill.name.includes(queryString) || skill.internal_name.includes(queryString)) {
+          results.push(skill);
+        }
+      }
+    }
+  }
+  cb(results);
+};
+
+const handleSkillSelect = (item) => {
+  if (!localValue.value.skills) {
+    localValue.value.skills = [];
+  }
+  if (localValue.value.skills.some((skill) => skill === item.internal_name)) {
+    ElMessage.warning('技能已存在');
+    return;
+  }
+  localValue.value.skills.push(item.internal_name);
+};
+const getSkillLabel = (internalName) => {
+  const mod = modStore.currentMod;
+  for (let i = 0; i < mod.packages.length; i++) {
+    const pkg = mod.packages[i];
+    const skill = pkg.skills.find((s) => s.internal_name === internalName);
+    if (skill) {
+      return `${skill.internal_name}<span class="info">（${pkg.name}-${skill.name}）</span>`;
+    }
+  }
+  return `${internalName}<span class="info">（非本扩展技能）</span>`;
+};
+const addCustomSkill = (skillCode) => {
+  if (!skillCode || !skillCode.trim()) {
+    return;
+  }
+  ElMessageBox.confirm(`是否添加自定义技能 "${skillCode}"？`, '添加自定义技能', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      if (!localValue.value.skills) {
+        localValue.value.skills = [];
+      }
+      if (localValue.value.skills.includes(skillCode)) {
+        ElMessage.warning('技能已存在');
+        return;
+      }
+      localValue.value.skills.push(skillCode);
+    })
+    .catch(() => {});
+};
 </script>
 
 <style scoped>
@@ -103,8 +187,40 @@ const formRules = reactive({
   color: var(--el-button-border-color);
 }
 
+.tips {
+  color: var(--text-color-remark);
+}
+
 .number-input {
   width: 20%;
   min-width: 120px;
+}
+
+.skill-list {
+  width: 100%;
+  margin-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+:deep(.el-tag__content) {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #317725;
+}
+
+:deep(.el-input-group__append) {
+  background: #f0f9eb;
+}
+
+:deep(.el-input-group__append button.el-button span) {
+  color: #317725;
+}
+
+:deep(.info) {
+  font-size: 0.8rem;
+  color: #50a5a5 !important;
+  margin-left: 5px;
 }
 </style>

@@ -1,8 +1,8 @@
 @import './font.css';
 
 * {
-  font-family: "AlimamaFangYuan", serif;
   --text-color-title: #222;
+  --text-color-remark: #555;
   --selected-background-color: #D0D0D0;
   --hover-background-color: #E2E2E2;
   --el-component-size: 40px;
@@ -15,6 +15,7 @@
 
 body {
   background-color: #f2f2f2;
+  font-family: "AlimamaFangYuan", serif;
 }
 
 .el-form-item__content {
@@ -32,6 +33,7 @@ body {
 
   * {
     --text-color-title: #f2f2f2;
+    --text-color-remark: #bbb;
     --selected-background-color: #555;
     --hover-background-color: #626262;
     --el-input-bg-color: #333;
