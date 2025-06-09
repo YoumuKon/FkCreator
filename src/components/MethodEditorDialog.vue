@@ -1,16 +1,31 @@
 <template>
-  <el-dialog :model-value="props.modelValue" :title="'方法编辑：' + props.data.name" fullscreen :close-on-click-modal="false" :show-close="false">
+  <el-dialog class="method-editor-dialog" :model-value="props.modelValue" :title="'方法编辑：' + props.data.name" fullscreen :close-on-click-modal="false" :show-close="false" append-to-body>
+    <template #header>
+      <div class="dialog-header">
+        <div class="dialog-title">方法编辑：{{ props.data.name }}</div>
+        <div class="method-editor-buttons">
+          <el-button type="primary" @click="testMethod">预览Lua代码</el-button>
+          <el-button type="primary" @click="saveMethod">保存</el-button>
+          <el-button type="warning" plain @click="resetToDefault">清空</el-button>
+          <el-button type="danger" @click="closeMethod">关闭</el-button>
+        </div>
+      </div>
+    </template>
     <div class="method-editor">
       <div ref="blocklyDiv" class="blockly-container"></div>
     </div>
-    <template #footer>
-      <div class="method-editor-buttons">
-        <el-button type="primary" @click="testMethod">Test</el-button>
-        <el-button type="primary" @click="saveMethod">保存</el-button>
-        <el-button type="danger" plain @click="resetToDefault">清空</el-button>
-        <el-button type="warning" @click="closeMethod">关闭</el-button>
+    <div class="bottom-info">
+      <p>注意：编辑完成后请点击保存按钮以保存修改。</p>
+      <p>@ Powr By Blockly</p>
+    </div>
+  </el-dialog>
+  <el-dialog v-model="showCodeDialog">
+    <template #header>
+      <div class="dialog-header">
+        <div class="dialog-title">预览Lua代码</div>
       </div>
     </template>
+    <pre v-highlight><code>{{ code }}</code></pre>
   </el-dialog>
 </template>
 <script setup>
@@ -58,7 +73,7 @@ const props = defineProps({
     required: true
   }
 });
-const emit = defineEmits(['update:modelValue', 'close']);
+const emit = defineEmits(['update:modelValue', 'save']);
 
 const close = () => {
   emit('update:modelValue', false);
@@ -76,7 +91,7 @@ onMounted(() => {
   });
 });
 const closeMethod = () => {
-  ElMessageBox.confirm('关闭编辑页面会导致本次修改的数据丢失，是否确认关闭？', '提示', {
+  ElMessageBox.confirm('关闭编辑页面会导致未保存数据丢失，是否确认关闭？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning'
@@ -87,7 +102,7 @@ const closeMethod = () => {
 
 const initBlockly = () => {
   workspace.value = Blockly.inject(blocklyDiv.value, {
-    // media: 'https://unpkg.com/blockly@10.0.0/media/',
+    media: 'https://unpkg.com/blockly@10.0.0/media/',
     toolbox: toolbox_server,
     scrollbars: true,
     trashcan: true,
@@ -104,18 +119,13 @@ const initBlockly = () => {
   });
   const rawWorkspace = toRaw(workspace.value);
   localMethod.value = JSON.parse(JSON.stringify(props.data));
-  // console.log(toRaw(localMethod.value))
-  localMethod.value.params.forEach((v) => {
-    console.log(v.name);
-  });
-
   rawWorkspace.localMethod = localMethod.value;
   rawWorkspace.registerToolboxCategoryCallback('METHOD_PARAMS', methodParamsCallback);
 
   // 加载已有块
   workspace.value.addChangeListener(onBlocklyChange);
-  if (localMethod.value.blocksJson) {
-    Blockly.serialization.workspaces.load(localMethod.value.blocksJson);
+  if (localMethod.value.blocksState) {
+    Blockly.serialization.workspaces.load(localMethod.value.blocksState, rawWorkspace);
   } else {
     addDefaultStartBlock();
   }
@@ -140,19 +150,24 @@ const onBlocklyChange = (event) => {
     }
   }
 };
+
+const code = ref('');
+const showCodeDialog = ref(false);
 const testMethod = () => {
   const rawWorkspace = toRaw(workspace.value);
-  console.log(luaGenerator.workspaceToCode(rawWorkspace));
+  code.value = luaGenerator.workspaceToCode(rawWorkspace);
+  showCodeDialog.value = true;
 };
 const saveMethod = () => {
   const rawWorkspace = toRaw(workspace.value);
-  localMethod.value.blocksJson = Blockly.serialization.workspaces.save(rawWorkspace);
-  console.log(localMethod.value);
-  // TODO: 将画布数据保存起来
-  close();
+  localMethod.value.blocksState = Blockly.serialization.workspaces.save(rawWorkspace);
+  emit('save', {
+    blocksState: localMethod.value.blocksState,
+    blocksCode: luaGenerator.workspaceToCode(rawWorkspace)
+  });
 };
 const resetToDefault = () => {
-  ElMessageBox.confirm('清空会导致本次修改的数据丢失，是否确认清空？', '提示', {
+  ElMessageBox.confirm('清空会导致未保存数据丢失，是否确认清空？', '提示', {
     confirmButtonText: '确认',
     cancelButtonText: '取消',
     type: 'warning'
@@ -165,9 +180,20 @@ const resetToDefault = () => {
   });
 };
 </script>
-<style scoped>
+<style>
+.method-editor-dialog {
+  overflow: hidden !important;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
 .blockly-container {
-  height: calc(100vh - 150px);
+  height: calc(100vh - 168px);
   width: 100%;
   border: 1.4px solid #5f92cd;
   border-radius: var(--el-border-radius-base);
@@ -177,10 +203,14 @@ const resetToDefault = () => {
   border-radius: var(--el-border-radius-base);
 }
 
-.method-editor-buttons {
-  display: flex;
-  justify-content: flex-end;
-  height: 10px;
-  margin-top: 20px;
+.bottom-info {
+  line-height: 1;
+  color: var(--el-button-border-color);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+code {
+  height: 40vh;
 }
 </style>

@@ -2,11 +2,13 @@
   <el-dialog :model-value="props.modelValue" @close="close" title="添加效果" :close-on-click-modal="false">
     <div class="effect-type-selector">
       <h4>效果类型</h4>
-      <div class="effect-types">
-        <div v-for="type in effectTypes" :key="type.id" class="effect-type-card" :class="{ selected: selectedType === type.id }" @click="selectType(type)">
-          <div class="type-info">
-            <h5>{{ type.name }}</h5>
-            <p>{{ type.description }}</p>
+      <div class="effect-types-container">
+        <div class="effect-types">
+          <div v-for="type in effectTypes" :key="type.id" class="effect-type-card" :class="{ selected: selectedType === type.id }" @click="selectType(type)">
+            <div class="type-info">
+              <h5>{{ type.name }}</h5>
+              <p>{{ type.description }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -90,11 +92,17 @@ const resetForm = () => {
   border-radius: 4px;
 }
 
+.effect-types-container {
+  height: 22vh;
+  overflow-y: auto;
+  padding: 0 8px;
+}
+
 .effect-types {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .effect-type-card {

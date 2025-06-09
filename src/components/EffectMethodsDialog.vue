@@ -10,12 +10,13 @@
       </el-table-column>
     </el-table>
   </el-dialog>
-  <MethodEditorDialog v-if="showMethodEditorDialog" v-model="showMethodEditorDialog" :data="method"></MethodEditorDialog>
+  <MethodEditorDialog v-if="showMethodEditorDialog" v-model="showMethodEditorDialog" :data="method" @save="saveMethod"></MethodEditorDialog>
 </template>
 
 <script setup>
 import MethodEditorDialog from '@/components/MethodEditorDialog.vue';
 import { ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
 
 const props = defineProps({
   modelValue: {
@@ -37,6 +38,14 @@ const method = ref(null);
 const openMethodEditor = (methodData) => {
   method.value = methodData;
   showMethodEditorDialog.value = true;
+};
+const saveMethod = ({ blocksState, blocksCode }) => {
+  method.value.blocksState = blocksState;
+  method.value.blocksCode = blocksCode;
+  emit('update:modelValue', false);
+  ElMessageBox.alert(`方法【${method.value.name}】已保存`, '保存成功', {
+    type: 'success'
+  });
 };
 </script>
 

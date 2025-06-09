@@ -34,22 +34,24 @@ const getLabel = (type) => {
 const getKey = (type, currentNode) => {
   return type + ':' + currentNode.id;
 };
+
+window.addEventListener('beforeunload', function (e) {
+  if (!currentMod.value || !currentNode.value) return;
+  e.preventDefault();
+  e.returnValue = false;
+});
 </script>
 
 <template>
   <div class="container">
     <template v-if="!currentMod">
       <div class="welcome-screen">
-        <img
-          src="@/assets/新月工坊.png"
-          alt="Logo"
-          style="width: 200px; height: auto; margin-bottom: 20px"
-        />
+        <img src="@/assets/新月工坊.png" alt="Logo" style="width: 200px; height: auto; margin-bottom: 20px" />
         <h2>欢迎使用拓展包制作器</h2>
-        <p>请先新建或加载一个工程</p>
+        <p>请先新建或加载一个项目</p>
         <el-button-group>
-          <el-button type="primary" size="large" @click="modStore.newMod()">新建工程</el-button>
-          <el-button type="primary" size="large" @click="modStore.loadMod()">加载工程</el-button>
+          <el-button type="primary" size="large" @click="modStore.newMod()">新建项目</el-button>
+          <el-button type="primary" size="large" @click="modStore.loadMod()">加载项目</el-button>
         </el-button-group>
       </div>
     </template>
@@ -64,12 +66,7 @@ const getKey = (type, currentNode) => {
           </div>
           <div class="button-group">
             <template v-if="currentNode.type === 'mod'">
-              <el-button
-                v-if="currentNode.type === 'mod'"
-                type="primary"
-                @click="modStore.addPackage()"
-                >添加包
-              </el-button>
+              <el-button v-if="currentNode.type === 'mod'" type="primary" @click="modStore.addPackage()">添加包 </el-button>
             </template>
             <template v-else-if="currentNode.type === 'package'">
               <el-button type="primary" @click="modStore.addGeneral()">添加武将</el-button>
@@ -82,30 +79,14 @@ const getKey = (type, currentNode) => {
             <template v-else-if="currentNode.type === 'skill'">
               <el-button type="danger" @click="modStore.deleteSkill()">删除技能</el-button>
             </template>
-            <el-button type="success" @click="modStore.saveMod()">保存工程</el-button>
+            <el-button type="success" @click="modStore.saveMod()">保存项目</el-button>
           </div>
         </div>
         <div class="content">
-          <ModEditor
-            v-if="currentNode.type === 'mod'"
-            :key="getKey('mod', currentNode.value)"
-            v-model="currentNode.value"
-          />
-          <PackageEditor
-            v-else-if="currentNode.type === 'package'"
-            :key="getKey('package', currentNode.value)"
-            v-model="currentNode.value"
-          />
-          <GeneralEditor
-            v-else-if="currentNode.type === 'general'"
-            :key="getKey('general', currentNode.value)"
-            v-model="currentNode.value"
-          />
-          <SkillEditor
-            v-else-if="currentNode.type === 'skill'"
-            :key="getKey('skill', currentNode.value)"
-            v-model="currentNode.value"
-          />
+          <ModEditor v-if="currentNode.type === 'mod'" :key="getKey('mod', currentNode.value)" v-model="currentNode.value" />
+          <PackageEditor v-else-if="currentNode.type === 'package'" :key="getKey('package', currentNode.value)" v-model="currentNode.value" />
+          <GeneralEditor v-else-if="currentNode.type === 'general'" :key="getKey('general', currentNode.value)" v-model="currentNode.value" />
+          <SkillEditor v-else-if="currentNode.type === 'skill'" :key="getKey('skill', currentNode.value)" v-model="currentNode.value" />
         </div>
       </div>
     </template>

@@ -1,11 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
-import {
-  createNewGeneral,
-  createNewMod,
-  createNewPackage,
-  createNewSkill
-} from '@/utils/models.js';
+import { createNewGeneral, createNewMod, createNewPackage, createNewSkill } from '@/utils/models.js';
 import { loadModFromFile, saveModToFile } from '@/utils/fileHandler.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { exportToLua } from '@/utils/exporter.js';
@@ -29,6 +24,14 @@ export const useModStore = defineStore('mod', () => {
 
   // 创建mod
   const newMod = async () => {
+    if (currentMod.value) {
+      const confirm = await ElMessageBox.confirm('当前有正在操作的项目，新建项目会覆盖当前项目，请确认进度是否已保存？', '警告', {
+        confirmButtonText: '继续',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(() => null);
+      if (!confirm) return;
+    }
     setCurrentMod(createNewMod());
     setCurrentNode({
       type: 'mod',
@@ -38,6 +41,14 @@ export const useModStore = defineStore('mod', () => {
 
   // 加载mod
   const loadMod = async () => {
+    if (currentMod.value) {
+      const confirm = await ElMessageBox.confirm('当前有正在操作的项目，加载项目会覆盖当前项目，请确认进度是否已保存？', '警告', {
+        confirmButtonText: '继续',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(() => null);
+      if (!confirm) return;
+    }
     try {
       const mod = await loadModFromFile();
       setCurrentMod(mod);
@@ -53,7 +64,7 @@ export const useModStore = defineStore('mod', () => {
   // 保存mod
   const saveMod = async () => {
     if (!currentMod.value) {
-      await ElMessageBox.alert('没有可保存的工程，请先创建或加载工程。');
+      await ElMessageBox.alert('没有可保存的项目，请先创建或加载项目。');
       return;
     }
     try {
@@ -61,17 +72,21 @@ export const useModStore = defineStore('mod', () => {
     } catch (error) {
       await ElMessageBox.alert('保存失败: ' + error.message);
     }
-    await ElMessageBox.alert('保存成功!');
+    await ElMessageBox.alert(`项目【${currentMod.value.name}】已保存`, '保存成功', {
+      type: 'success'
+    });
   };
 
   // 导出Lua
   const exportLua = async () => {
     try {
       await exportToLua(currentMod.value);
-      await ElMessageBox.alert('导出成功!');
     } catch (error) {
       await ElMessageBox.alert('导出失败: ' + error.message);
     }
+    await ElMessageBox.alert(`项目【${currentMod.value.name}】已导出Lua`, '导出成功', {
+      type: 'success'
+    });
   };
 
   // 添加包
