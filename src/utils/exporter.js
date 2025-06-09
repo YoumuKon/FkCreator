@@ -74,7 +74,7 @@ const defineParamBlocks = (params) => {
     ]);
     luaGenerator.forBlock[blkType] = () => [v.name, Order.ATOMIC];
   });
-}
+};
 
 // 生成packages/$MOD/pkg/$PKG/skills/$SKILL.lua
 const generateSkillCode = (skill) => {
@@ -93,22 +93,25 @@ Fk:loadTranslationTable {
   [":${skill.internal_name}"] = "${skill.description}",
 }\n\n`;
 
-  skill.effects.forEach(effect => {
+  skill.effects.forEach((effect) => {
     luaCode += `_skill_val:addEffect('${effect.type}', {\n`;
-    effect.methods.forEach(m => {
+    effect.methods.forEach((m) => {
       if (!m.blocksState) return;
       luaCode += `  ${m.name} = function(`;
-      luaCode += m.params.map(p => p.name).join(', ');
+      luaCode += m.params.map((p) => p.name).join(', ');
       luaCode += ')\n';
       defineParamBlocks(m.params);
 
       const tempWorkspace = new Blockly.Workspace();
       Blockly.serialization.workspaces.load(m.blocksState, tempWorkspace);
       const code = luaGenerator.workspaceToCode(tempWorkspace);
-      const indentedCode = code.split('\n').map(line => line ? '    ' + line : line).join('\n');
+      const indentedCode = code
+        .split('\n')
+        .map((line) => (line ? '    ' + line : line))
+        .join('\n');
       luaCode += indentedCode;
       tempWorkspace.dispose();
-      luaCode += '  end,\n'
+      luaCode += '  end,\n';
     });
     luaCode += `})\n\n`;
   });

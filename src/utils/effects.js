@@ -33,7 +33,7 @@ export const effectTypes = [
               name: 'to',
               message: '目标角色',
               type: 'Player'
-            },
+            }
           ],
           ret: 'number',
           blockData: null
@@ -57,11 +57,11 @@ export const effectTypes = [
               name: 'to',
               message: '目标角色',
               type: 'Player'
-            },
+            }
           ],
           ret: 'number',
           blockData: null
-        },
+        }
       ]
     }
   },
@@ -95,7 +95,7 @@ export const effectTypes = [
               name: 'card',
               message: '相关卡牌',
               type: 'Card'
-            },
+            }
           ],
           ret: 'bool',
           blockData: null
@@ -119,7 +119,7 @@ export const effectTypes = [
               name: 'card',
               message: '相关卡牌',
               type: 'Card'
-            },
+            }
           ],
           ret: 'bool',
           blockData: null
@@ -143,7 +143,7 @@ export const effectTypes = [
               name: 'card',
               message: '相关卡牌',
               type: 'Card'
-            },
+            }
           ],
           ret: 'bool',
           blockData: null
@@ -167,7 +167,7 @@ export const effectTypes = [
               name: 'card',
               message: '相关卡牌',
               type: 'Card'
-            },
+            }
           ],
           ret: 'bool',
           blockData: null
@@ -191,12 +191,12 @@ export const effectTypes = [
               name: 'to',
               message: '目标角色',
               type: 'Player'
-            },
+            }
           ],
           ret: 'bool',
           blockData: null
-        },
-      ],
+        }
+      ]
     }
   },
   {

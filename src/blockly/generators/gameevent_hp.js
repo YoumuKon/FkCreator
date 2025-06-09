@@ -19,12 +19,12 @@ export default () => {
     }
 
     code += '}\n';
-    return code
-  }
+    return code;
+  };
   luaGenerator.forBlock['lose_hp'] = function (block, generator) {
     return 'local room = Fk:currentRoom()\n';
-  }
+  };
   luaGenerator.forBlock['recover_hp'] = function (block, generator) {
     return 'local room = Fk:currentRoom()\n';
-  }
-}
+  };
+};

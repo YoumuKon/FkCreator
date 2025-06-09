@@ -63,8 +63,9 @@ const select = (type, item) => {
 };
 const modStore = useModStore();
 watchEffect(() => {
-  if (modStore.currentNode) {
-    selectedId.value = modStore.currentNode.value.id;
+  const currentNode = modStore.currentNode;
+  if (currentNode) {
+    selectedId.value = currentNode.id;
   }
 });
 </script>

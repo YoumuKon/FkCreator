@@ -13,7 +13,7 @@ export default [
         name: 'PROPERTY',
         options: [
           ['体力', 'hp'],
-          ['体力上限', 'maxHp'],
+          ['体力上限', 'maxHp']
         ]
       }
     ],
@@ -21,5 +21,5 @@ export default [
     colour: 230,
     tooltip: '获取角色的指定属性',
     helpUrl: ''
-  },
+  }
 ];

@@ -36,7 +36,7 @@ const loseHpBlocks = createConfigurableBlock({
     { type: 'input_value', name: 'AMOUNT', check: 'Number' }
   ],
   colour: 230,
-  tooltip: '失去体力',
+  tooltip: '失去体力'
 });
 
 const recoverBlocks = createConfigurableBlock({
@@ -55,12 +55,8 @@ const recoverBlocks = createConfigurableBlock({
       inputType: 'input_value',
       check: 'Player'
     },
-    { name: 'SOURCE_CARD', message: '回复来源卡牌', inputType: 'input_value', check: "Card" }
-  ],
+    { name: 'SOURCE_CARD', message: '回复来源卡牌', inputType: 'input_value', check: 'Card' }
+  ]
 });
 
-export default [
-  ...damageBlocks,
-  ...loseHpBlocks,
-  ...recoverBlocks,
-];
+export default [...damageBlocks, ...loseHpBlocks, ...recoverBlocks];

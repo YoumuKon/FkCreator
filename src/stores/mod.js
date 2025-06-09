@@ -4,10 +4,64 @@ import { createNewGeneral, createNewMod, createNewPackage, createNewSkill } from
 import { loadModFromFile, saveModToFile } from '@/utils/fileHandler.js';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { exportToLua } from '@/utils/exporter.js';
+import localforage from 'localforage';
+
+const autoSaveKey = 'autoSaveMod';
+const autoSaveInterval = 5000;
 
 export const useModStore = defineStore('mod', () => {
+  const storage = localforage.createInstance({
+    name: 'localStorage',
+    storeName: 'localStore'
+  });
+
+  const saveLocalData = async (key, value) => {
+    try {
+      await storage.setItem(key, value);
+    } catch (error) {
+      console.error('保存数据到本地失败:', error);
+      throw new Error('保存数据到本地失败');
+    }
+  };
+
+  const loadLocalData = async (key) => {
+    try {
+      return await storage.getItem(key);
+    } catch (error) {
+      console.error('从本地加载数据失败:', error);
+      throw new Error('从本地加载数据失败');
+    }
+  };
+
   // 当前项目
   const currentMod = ref(null);
+
+  loadLocalData(autoSaveKey).then((res) => {
+    console.log(res);
+    if (res) {
+      currentMod.value = JSON.parse(res);
+      setCurrentNode({
+        type: 'mod',
+        value: currentMod.value
+      });
+    }
+  });
+
+  const autoSaveModeTimout = ref(null);
+  const autoSaveMod = () => {
+    autoSaveModeTimout.value = setTimeout(async () => {
+      const mod = currentMod.value;
+      console.log('start save...');
+      if (mod) {
+        console.log('saving...');
+        await saveLocalData(autoSaveKey, JSON.stringify(mod));
+      }
+      console.log('end save...');
+      autoSaveMod();
+    }, autoSaveInterval);
+  };
+  autoSaveMod();
+
   // 当前节点
   const currentNode = ref({
     type: '',
@@ -192,6 +246,8 @@ export const useModStore = defineStore('mod', () => {
   };
 
   return {
+    saveLocalData,
+    loadLocalData,
     currentMod,
     currentNode,
     setCurrentNode,

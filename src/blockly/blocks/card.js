@@ -2,17 +2,21 @@ import * as Blockly from 'blockly';
 
 Blockly.Blocks['card_property_read'] = {
   init: function () {
-    this.appendValueInput('CARD')
-      .setCheck('Card')
-      .appendField('卡牌');
+    this.appendValueInput('CARD').setCheck('Card').appendField('卡牌');
 
     this.appendDummyInput('PROPERTY_INPUT')
       .appendField('的')
-      .appendField(new Blockly.FieldDropdown([
-        ['点数', 'number'],
-        ['花色', 'suit'],
-        ['名称', 'name'],
-      ], this.updateOutputType.bind(this)), 'PROPERTY');
+      .appendField(
+        new Blockly.FieldDropdown(
+          [
+            ['点数', 'number'],
+            ['花色', 'suit'],
+            ['名称', 'name']
+          ],
+          this.updateOutputType.bind(this)
+        ),
+        'PROPERTY'
+      );
 
     this.setColour(230);
     this.setTooltip('获取卡牌的指定属性');
@@ -27,14 +31,13 @@ Blockly.Blocks['card_property_read'] = {
    */
   updateOutputType: function (newValue) {
     const typeMap = {
-      'number': 'Number',
-      'suit': 'String',
-      'name': 'String',
+      number: 'Number',
+      suit: 'String',
+      name: 'String'
     };
     const outputType = typeMap[newValue] || null;
     this.setOutput(true, outputType);
   }
 };
 
-export default [
-];
+export default [];

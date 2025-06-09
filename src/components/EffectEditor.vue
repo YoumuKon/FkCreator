@@ -3,12 +3,7 @@
     <h2>{{ effect.name }}</h2>
 
     <div class="method-list">
-      <div
-        v-for="(method, name) in effect.methods"
-        :key="name"
-        class="method-item"
-        @click="this.$emit('edit-method', method)"
-      >
+      <div v-for="(method, name) in effect.methods" :key="name" class="method-item" @click="this.$emit('edit-method', method)">
         <span>{{ method.name }}</span>
         <span v-if="!method?.isDefault">(自定义)</span>
       </div>
