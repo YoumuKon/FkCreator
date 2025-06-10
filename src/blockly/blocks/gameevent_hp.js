@@ -20,10 +20,10 @@ const damageBlocks = createConfigurableBlock({
   ],
   dropdowns: {
     DAMAGE_TYPE: [
-      ['普', 'normal'],
-      ['火', 'fire'],
-      ['雷', 'thunder'],
-      ['冰', 'ice']
+      ['普', 'NormalDamage'],
+      ['火', 'ThunderDamage'],
+      ['雷', 'FireDamage'],
+      ['冰', 'IceDamage']
     ]
   }
 });
@@ -59,4 +59,15 @@ const recoverBlocks = createConfigurableBlock({
   ]
 });
 
-export default [...damageBlocks, ...loseHpBlocks, ...recoverBlocks];
+const changeMaxHpBlocks = createConfigurableBlock({
+  type: 'change_maxhp',
+  message: '改变一名角色的体力上限\n角色%1 改变值%2',
+  args: [
+    { type: 'input_value', name: 'TARGET', check: 'Player' },
+    { type: 'input_value', name: 'AMOUNT', check: 'Number' }
+  ],
+  colour: 230,
+  tooltip: '改变体力上限'
+});
+
+export default [...damageBlocks, ...loseHpBlocks, ...recoverBlocks, ...changeMaxHpBlocks];

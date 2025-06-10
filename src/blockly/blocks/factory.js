@@ -18,7 +18,6 @@ export function createConfigurableBlock({
     type,
     message0: message,
     args0: args,
-    mutator: `${type}_mutator`,
     inputsInline: false,
     previousStatement: null,
     nextStatement: null,
@@ -104,32 +103,37 @@ export function createConfigurableBlock({
       });
     }
   };
+  if (optionalFields.length > 0) {
+    blockJson.mutator = `${type}_mutator`;
 
-  const containerBlock = {
-    type: `${type}_mutator_container`,
-    message0: '更多信息\n%1',
-    args0: [{ type: 'input_statement', name: 'STACK' }],
-    colour: 260,
-    tooltip: '添加可选字段',
-    enableContextMenu: false
-  };
+    const containerBlock = {
+      type: `${type}_mutator_container`,
+      message0: '更多信息\n%1',
+      args0: [{ type: 'input_statement', name: 'STACK' }],
+      colour: 260,
+      tooltip: '添加可选字段',
+      enableContextMenu: false
+    };
 
-  const optionalFieldBlocks = optionalFields.map((field) => ({
-    type: `${type}_mutator_${field.name.toLowerCase()}`,
-    message0: field.message,
-    previousStatement: null,
-    nextStatement: null,
-    colour: 260,
-    tooltip: `添加${field.message}字段`,
-    enableContextMenu: false
-  }));
+    const optionalFieldBlocks = optionalFields.map((field) => ({
+      type: `${type}_mutator_${field.name.toLowerCase()}`,
+      message0: field.message,
+      previousStatement: null,
+      nextStatement: null,
+      colour: 260,
+      tooltip: `添加${field.message}字段`,
+      enableContextMenu: false
+    }));
 
-  Blockly.Extensions.registerMutator(
-    `${type}_mutator`,
-    mutatorMixin,
-    null,
-    optionalFieldBlocks.map((f) => f.type)
-  );
+    Blockly.Extensions.registerMutator(
+      `${type}_mutator`,
+      mutatorMixin,
+      null,
+      optionalFieldBlocks.map((f) => f.type)
+    );
 
-  return [blockJson, containerBlock, ...optionalFieldBlocks];
+    return [blockJson, containerBlock, ...optionalFieldBlocks];
+  } else {
+    return [blockJson];
+  }
 }
