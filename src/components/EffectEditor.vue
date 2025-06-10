@@ -3,12 +3,7 @@
     <h2>{{ effect.name }}</h2>
 
     <div class="method-list">
-      <div
-        v-for="(method, name) in effect.methods"
-        :key="name"
-        class="method-item"
-        @click="this.$emit('edit-method', method)"
-      >
+      <div v-for="(method, name) in effect.methods" :key="name" class="method-item" @click="this.$emit('edit-method', method)">
         <span>{{ method.name }}</span>
         <span v-if="!method?.isDefault">(自定义)</span>
       </div>
@@ -21,12 +16,12 @@
 <script>
 export default {
   props: {
-    effect: null,
+    effect: null
   },
   data() {
     return {
-      localEffect: { ...this.effect },
-    }
+      localEffect: { ...this.effect }
+    };
   },
   methods: {
     saveEffect() {
@@ -35,8 +30,8 @@ export default {
       // this.$parent.effects.splice(index, 1, this.effect)
       // this.$parent.saveEffects()
       // this.$router.go(-1)
-      this.$emit('saveEffect', this.localEffect)
-    },
-  },
-}
+      this.$emit('saveEffect', this.localEffect);
+    }
+  }
+};
 </script>

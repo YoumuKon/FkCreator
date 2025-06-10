@@ -5,7 +5,7 @@ export const createNewMod = () => ({
   internal_name: '',
   author: '',
   version: '1.0.0',
-  description: '这是一个刚新建的拓展，将相关数据改成你需要的。',
+  description: '',
   packages: []
 });
 
@@ -14,7 +14,7 @@ export const createNewPackage = () => ({
   id: `pkg_${Date.now()}`,
   name: `pkg_${Date.now()}`,
   internal_name: '',
-  description: '这是一个刚新建的包，将相关数据改成你需要的。',
+  description: '',
   generals: [],
   skills: []
 });
@@ -28,7 +28,7 @@ export const createNewGeneral = () => ({
   hp: 4,
   maxHp: 4,
 
-  skills: [],
+  skills: []
 });
 
 // 基础Skill结构
@@ -36,53 +36,17 @@ export const createNewSkill = () => ({
   id: `skill_${Date.now()}`,
   name: `skill_${Date.now()}`,
   internal_name: '',
-  description: '这是一个刚新建的技能，将相关数据改成你需要的。',
-
-  effects: [],
+  description: '',
+  effects: []
 });
 
 /**
- * @typedef {Object} SkillEffectProp
- * @property {string} type - 类别
- * @property {string} name - 名字，仅用于界面
- * @property {string} description - 描述，仅用于注释
- */
-
-const effectTemplates = {
-  'trigger': {},
-  'active': {},
-  'viewas': {},
-  'targetmod': {
-    type: 'targetmod',
-    name: '',
-    description: '',
-    properties: [],
-    methods: [
-      {
-        name: 'residue_func',
-        description: '用于修改某卡牌的使用次数',
-        type: 'client',
-        params: [
-          {
-            name: "self",
-            type: "TargetModSkill",
-          },
-          // ...
-        ],
-        ret: "number",
-        blockData: null,
-      },
-      // ...
-    ],
-  },
-}
-
-/**
- * @param {SkillEffectProp} effectData 
+ * 创建一个新的效果对象
  */
 export const createNewEffect = (effectData) => {
-  let ret = { ...effectTemplates[effectData.type] };
+  const ret = {};
   ret.name = effectData.name;
   ret.description = effectData.description;
+  ret.type = effectData.type;
   return ret;
 };

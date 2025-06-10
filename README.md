@@ -8,18 +8,19 @@
 - [ ] 生成时对关键字段判空与报错等
 - [ ] internal*name字段要限制正则（只能包含0-9a-zA-z*并且只能字母开头）且必须不空
 - [ ] 完善各个生成单元的信息填充
-- [ ] （！）支持将正在编辑的工程文件暂存在浏览器的什么地方
+- [ ] （！）支持将正在编辑的项目文件暂存在浏览器的什么地方
 - [ ] 待基本内容准备停当后引入blockly库以实现addEffect这样的东西
 - [ ] 还有很多很多...
 
 ## 运行起来
 
-推荐使用[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)插件。
+推荐使用[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+插件。
 
 运行以下命令可初始化项目：
 
 ```sh
-$ yarn
+$ yarn install --frozen-lockfile
 ```
 
 在开发环境下运行，支持实时预览以及代码热更新：

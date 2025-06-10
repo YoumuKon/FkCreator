@@ -1,130 +1,137 @@
 <template>
-  <div class="skill-editor">
-    <!-- Effect和Method两个编辑器也塞到这个div好了 -->
-    <EffectEditor
-      v-if="selectedType == 'effect'"
-      :effect="selectEffect"
-      @saveEffect="updateEffect"
-      @edit-method="editMethod"
-    />
-    <MethodEditor v-else-if="selectedType == 'method'" :method="selectMethod" />
-    <div v-else-if="selectedType == 'skill'">
-      <h2>技能设置</h2>
-      <div class="lr-container">
-        <div class="form-group">
-          <label>技能名称</label>
-          <input v-model="localSkill.name" type="text" />
-        </div>
-
-        <div class="form-group">
-          <label>内部名称</label>
-          <input v-model="localSkill.internal_name" type="text" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>技能描述</label>
-        <textarea v-model="localSkill.description"></textarea>
-      </div>
-
-      <button @click="showAddDialog">添加效果</button>
-
-      <div class="effect-list">
-        <div
-          v-for="effect in this.localSkill.effects"
-          :key="effect.name"
-          class="effect-item"
-          @click="editEffect(effect)"
-        >
-          {{ effect.name }}
-        </div>
-      </div>
-
-      <AddEffectDialog v-if="showDialog" @close="showDialog = false" @create="createEffect" />
-
-      <button @click="deleteSkill" class="delete-button">删除技能</button>
-    </div>
-  </div>
+  <el-form label-width="80px" :model="localValue" :rules="formRules">
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <el-form-item prop="name">
+          <template #label>
+            <span>技能名称</span>
+            <span class="remark">（长度限制10）</span>
+          </template>
+          <el-input v-model="localValue.name" placeholder="技能名称" maxlength="10"></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item prop="internal_name">
+          <template #label>
+            <span>内部名称（code）</span>
+            <span class="remark">（长度限制60）</span>
+          </template>
+          <el-input v-model="localValue.internal_name" placeholder="请输入内部名称" maxlength="60"></el-input>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-form-item label="技能描述" prop="description">
+      <el-input type="textarea" :rows="4" v-model="localValue.description" placeholder="这是一个刚创建的技能，请添加相关信息"></el-input>
+    </el-form-item>
+    <el-form-item label="技能效果">
+      <el-row>
+        <el-col :span="24">
+          <el-button type="primary" @click="showAddEffectDialog = true">添加效果</el-button>
+        </el-col>
+        <el-col :span="24">
+          <el-table :data="localValue.effects" border class="table">
+            <el-table-column prop="name" label="效果名" min-width="100" />
+            <el-table-column prop="description" label="描述" min-width="200">
+              <template #default="scope">
+                <span>{{ scope.row.description || '-' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="80" align="center">
+              <template #default="scope">
+                <el-button type="text" @click="() => openEffectMethodsDialog(scope.row)"> 方法配置 </el-button>
+                <el-button type="danger" text @click="deleteEffect(scope.$index, scope.row)"> 删除 </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+    </el-form-item>
+  </el-form>
+  <AddEffectDialog v-model="showAddEffectDialog" @create="createEffect" />
+  <EffectMethodsDialog v-model="showEffectMethodsDialog" :data="effectMethods"></EffectMethodsDialog>
 </template>
 
-<script>
-import AddEffectDialog from './AddEffectDialog.vue'
-import { createNewEffect } from '../utils/models.js'
-import EffectEditor from './EffectEditor.vue'
-import MethodEditor from './MethodEditor.vue'
+<script setup>
+import { reactive, ref, watchEffect } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import AddEffectDialog from '@/components/AddEffectDialog.vue';
+import EffectMethodsDialog from '@/components/EffectMethodsDialog.vue';
+import { getTemplateByEffectType } from '@/utils/effects.js';
+import { createNewEffect } from '@/utils/models.js';
 
-export default {
-  components: {
-    AddEffectDialog,
-    EffectEditor,
-    MethodEditor,
-  },
-  props: {
-    skill: Object,
-  },
-  data() {
-    return {
-      localSkill: { ...this.skill },
-      showDialog: false,
-      selectedType: 'skill',
-      selectEffect: null,
-      selectMethod: null,
+const { modelValue } = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  }
+});
+const emits = defineEmits(['update:modelValue']);
+const localValue = ref(modelValue);
+const updateValue = (value) => {
+  localValue.value = value;
+  emits('update:modelValue', localValue.value);
+};
+watchEffect(() => {
+  updateValue(localValue.value);
+});
+const formRules = reactive({
+  name: [{ required: true, message: '技能名称不能为空', trigger: 'change' }],
+  internal_name: [
+    { required: true, message: '内部名称不能为空', trigger: 'change' },
+    {
+      pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+      message: '仅允许英文开头，且仅包含英文字母、数字、下划线',
+      trigger: 'change'
     }
-  },
-  watch: {
-    localSkill: {
-      deep: true,
-      handler(newVal) {
-        this.$emit('update:skill', newVal)
-      },
-    },
-    skill(newVal) {
-      this.localSkill = { ...newVal }
-    },
-  },
-  methods: {
-    showAddDialog() {
-      this.showDialog = true
-    },
-    createEffect(effectData) {
-      const newEffect = createNewEffect({
-        type: 'targetmod',
-        name: effectData.name,
-        description: effectData.description,
-      })
-      this.localSkill.effects.push(newEffect)
-    },
-    editEffect(effect) {
-      // console.log('editing:::', effect)
-      // this.$router.push(`/effect/${effect.id}`)
-      this.selectEffect = effect
-      this.selectedType = 'effect'
-    },
-    updateEffect(effect) {
-      const index = this.localSkill.effects.findIndex((e) => e.name === effect.name)
-      if (index !== -1) {
-        this.localSkill.effects[index] = effect
-      }
-      // 返回初始页
-      this.selectedType = 'skill'
-    },
-    editMethod(method) {
-      console.log('editing:::', method)
-      // this.$router.push(`/effect/${effect.id}`)
-      this.selectMethod = method
-      this.selectedType = 'method'
-    },
-    updateEffect(effect) {
-      const index = this.localSkill.effects.findIndex((e) => e.name === effect.name)
-      if (index !== -1) {
-        this.localSkill.effects[index] = effect
-      }
-      // 返回初始页
-      this.selectedType = 'skill'
-    },
-    deleteSkill() {
-      this.$emit('delete', this.localSkill.id)
-    },
-  },
-}
+  ]
+});
+
+// 技能效果
+const showAddEffectDialog = ref(false);
+
+const createEffect = (data) => {
+  const template = getTemplateByEffectType(data.type);
+  if (!template || Object.keys(template).length === 0) {
+    ElMessage.error('未找到效果模板');
+    return;
+  }
+  const newEffect = createNewEffect(data);
+  // 合并模板和新效果
+  const resEffect = { ...JSON.parse(JSON.stringify(template)), ...newEffect };
+  localValue.value.effects.push(resEffect);
+  return resEffect;
+};
+
+const deleteEffect = (index, data) => {
+  ElMessageBox.confirm(`确定删除效果【${data.name}】吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    localValue.value.effects.splice(index, 1);
+    ElMessage.success('删除成功');
+  });
+};
+
+const showEffectMethodsDialog = ref(false);
+const effectMethods = ref([]);
+const openEffectMethodsDialog = (effect) => {
+  effectMethods.value = effect.methods;
+  showEffectMethodsDialog.value = true;
+};
 </script>
+
+<style scoped>
+.remark {
+  font-size: 0.8em;
+  color: var(--el-button-border-color);
+}
+
+.table {
+  margin-top: 10px;
+  height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 800px;
+}
+</style>

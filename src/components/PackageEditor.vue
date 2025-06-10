@@ -1,93 +1,65 @@
 <template>
-  <div class="package-editor">
-    <h2>包设置</h2>
-
-    <div class="lr-container">
-      <div class="form-group">
-        <label>包名称</label>
-        <input v-model="localPkg.name" type="text" />
-      </div>
-
-      <div class="form-group">
-        <label>内部名称</label>
-        <input v-model="localPkg.internal_name" type="text" />
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>描述</label>
-      <textarea v-model="localPkg.description"></textarea>
-    </div>
-
-    <div class="button-group">
-      <button @click="addGeneral" class="add-button">添加武将</button>
-      <button @click="addSkill" class="add-button">添加技能</button>
-      <button @click="deletePackage" class="delete-button">删除包</button>
-    </div>
-  </div>
+  <el-form label-width="80px" :model="localValue" :rules="formRules">
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <el-form-item prop="name">
+          <template #label>
+            <span>包名称</span>
+            <span class="remark">（长度限制20）</span>
+          </template>
+          <el-input v-model="localValue.name" placeholder="请输入Mod名称" maxlength="20"></el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item prop="internal_name">
+          <template #label>
+            <span>内部名称（code）</span>
+            <span class="remark">（长度限制60）</span>
+          </template>
+          <el-input v-model="localValue.internal_name" placeholder="请输入内部名称" maxlength="60"></el-input>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-form-item label="描述" prop="description">
+      <el-input type="textarea" :rows="4" v-model="localValue.description" placeholder="这是一个刚创建的包，请添加相关信息"></el-input>
+    </el-form-item>
+  </el-form>
 </template>
 
-<script>
-export default {
-  props: {
-    pkg: Object,
-  },
-  data() {
-    return {
-      localPkg: { ...this.pkg },
+<script setup>
+import { reactive, ref, watchEffect } from 'vue';
+
+const { modelValue } = defineProps({
+  modelValue: {
+    type: Object,
+    required: true
+  }
+});
+const emits = defineEmits(['update:modelValue']);
+const localValue = ref(modelValue);
+const updateValue = (value) => {
+  localValue.value = value;
+  emits('update:modelValue', localValue.value);
+};
+watchEffect(() => {
+  updateValue(localValue.value);
+});
+const formRules = reactive({
+  name: [{ required: true, message: '包名称不能为空', trigger: 'change' }],
+  internal_name: [
+    { required: true, message: '内部名称不能为空', trigger: 'change' },
+    {
+      pattern: /^[a-zA-Z][a-zA-Z0-9_]*$/,
+      message: '仅允许英文开头，且仅包含英文字母、数字、下划线',
+      trigger: 'change'
     }
-  },
-  watch: {
-    localPkg: {
-      deep: true,
-      handler(newVal) {
-        this.$emit('update:pkg', newVal)
-      },
-    },
-    pkg(newVal) {
-      this.localPkg = { ...newVal }
-    },
-  },
-  methods: {
-    addGeneral() {
-      this.$emit('add-general', this.localPkg.id)
-    },
-    addSkill() {
-      this.$emit('add-skill', this.localPkg.id)
-    },
-    deletePackage() {
-      this.$emit('delete', this.localPkg.id)
-    },
-  },
-}
+  ]
+});
 </script>
 
 <style scoped>
-.package-editor {
-  padding: 1rem;
-}
-
-.button-group {
-  margin-top: 1rem;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.add-button {
-  padding: 0.5rem 1rem;
-  background: #42b983;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.delete-button {
-  padding: 0.5rem 1rem;
-  background: #ff4d4f;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.remark {
+  font-size: 0.8em;
+  color: var(--el-button-border-color);
 }
 </style>

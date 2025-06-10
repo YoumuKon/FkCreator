@@ -7,29 +7,29 @@ export default {
       type: 'text',
       kind: 'block',
       fields: {
-        TEXT: '',
-      },
+        TEXT: ''
+      }
     },
     {
       type: 'text_join',
-      kind: 'block',
+      kind: 'block'
     },
     {
       type: 'text_append',
       kind: 'block',
       fields: {
-        name: 'item',
+        name: 'item'
       },
       inputs: {
         TEXT: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
-        },
-      },
+              TEXT: ''
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_length',
@@ -39,11 +39,11 @@ export default {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: 'abc',
-            },
-          },
-        },
-      },
+              TEXT: 'abc'
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_isEmpty',
@@ -53,17 +53,17 @@ export default {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
-        },
-      },
+              TEXT: ''
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_indexOf',
       kind: 'block',
       fields: {
-        END: 'FIRST',
+        END: 'FIRST'
       },
       inputs: {
         VALUE: {
@@ -71,26 +71,26 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'text',
-              },
-            },
-          },
+                name: 'text'
+              }
+            }
+          }
         },
         FIND: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: 'abc',
-            },
-          },
-        },
-      },
+              TEXT: 'abc'
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_charAt',
       kind: 'block',
       fields: {
-        WHERE: 'FROM_START',
+        WHERE: 'FROM_START'
       },
       inputs: {
         VALUE: {
@@ -98,19 +98,19 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'text',
-              },
-            },
-          },
-        },
-      },
+                name: 'text'
+              }
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_getSubstring',
       kind: 'block',
       fields: {
         WHERE1: 'FROM_START',
-        WHERE2: 'FROM_START',
+        WHERE2: 'FROM_START'
       },
       inputs: {
         STRING: {
@@ -118,46 +118,46 @@ export default {
             type: 'variables_get',
             fields: {
               VAR: {
-                name: 'text',
-              },
-            },
-          },
-        },
-      },
+                name: 'text'
+              }
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_changeCase',
       kind: 'block',
       fields: {
-        CASE: 'UPPERCASE',
+        CASE: 'UPPERCASE'
       },
       inputs: {
         TEXT: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: 'abc',
-            },
-          },
-        },
-      },
+              TEXT: 'abc'
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_trim',
       kind: 'block',
       fields: {
-        MODE: 'BOTH',
+        MODE: 'BOTH'
       },
       inputs: {
         TEXT: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: 'abc',
-            },
-          },
-        },
-      },
+              TEXT: 'abc'
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_count',
@@ -167,19 +167,19 @@ export default {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
+              TEXT: ''
+            }
+          }
         },
         TEXT: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
-        },
-      },
+              TEXT: ''
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_replace',
@@ -189,27 +189,27 @@ export default {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
+              TEXT: ''
+            }
+          }
         },
         TO: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
+              TEXT: ''
+            }
+          }
         },
         TEXT: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
-        },
-      },
+              TEXT: ''
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_reverse',
@@ -219,11 +219,11 @@ export default {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: '',
-            },
-          },
-        },
-      },
+              TEXT: ''
+            }
+          }
+        }
+      }
     },
 
     {
@@ -234,28 +234,28 @@ export default {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: 'abc',
-            },
-          },
-        },
-      },
+              TEXT: 'abc'
+            }
+          }
+        }
+      }
     },
     {
       type: 'text_prompt_ext',
       kind: 'block',
       fields: {
-        TYPE: 'TEXT',
+        TYPE: 'TEXT'
       },
       inputs: {
         TEXT: {
           shadow: {
             type: 'text',
             fields: {
-              TEXT: 'abc',
-            },
-          },
-        },
-      },
-    },
-  ],
-}
+              TEXT: 'abc'
+            }
+          }
+        }
+      }
+    }
+  ]
+};
