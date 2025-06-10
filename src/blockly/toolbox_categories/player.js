@@ -6,6 +6,14 @@ export default {
     {
       type: 'player_property_read',
       kind: 'block'
-    }
+    },
+    {
+      type: 'player_property_read_by_fn',
+      kind: 'block'
+    },
+    {
+      type: 'player_get_mark',
+      kind: 'block'
+    },
   ]
 };
