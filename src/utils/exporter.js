@@ -37,8 +37,8 @@ const generatePkgCode = (mod, pkg) => {
   ** 关于包的信息 **
 --]]
 
-local extension = Package:new(${pkg.internal_name})
-extension = extensionName = ${mod.internal_name}
+local extension = Package:new('${pkg.internal_name}')
+extension.extensionName = '${mod.internal_name}'
 extension:loadSkillSkelsByPath("./packages/${mod.internal_name}/pkg/${pkg.internal_name}/skills")
 
 -- 此为绕过local上限之法，仅用于生成器代码，请勿模仿
