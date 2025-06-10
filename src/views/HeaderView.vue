@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useModStore } from '@/stores/mod.js';
 
@@ -36,6 +36,7 @@ const handleSelect = (index) => {
     }
   }
 };
+const path = computed(() => router.currentRoute.value.fullPath);
 </script>
 <template>
   <el-menu :default-active="activeIndex" :ellipsis="false" class="el-menu-demo" mode="horizontal" background-color="#707e9c" text-color="#fff" active-text-color="#ffd04b" @select="handleSelect">
@@ -43,7 +44,7 @@ const handleSelect = (index) => {
       <img src="@/assets/favicon.png" alt="Logo" style="width: 30px; height: auto; margin-right: 10px" />
       拓展包制作器
     </el-menu-item>
-    <el-menu-item v-if="modStore.currentMod" index="/mod">返回项目</el-menu-item>
+    <el-menu-item v-if="path !== '/mod' && modStore.currentMod" index="/mod">返回项目</el-menu-item>
     <el-sub-menu>
       <template #title>项目管理</template>
       <el-menu-item index="@newMod">新建项目</el-menu-item>
