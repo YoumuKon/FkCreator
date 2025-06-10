@@ -37,7 +37,7 @@ export const useModStore = defineStore('mod', () => {
   const currentMod = ref(null);
 
   loadLocalData(autoSaveKey).then((res) => {
-    console.log(res);
+    //console.log(res);
     if (res) {
       currentMod.value = JSON.parse(res);
       setCurrentNode({
@@ -51,12 +51,12 @@ export const useModStore = defineStore('mod', () => {
   const autoSaveMod = () => {
     autoSaveModeTimout.value = setTimeout(async () => {
       const mod = currentMod.value;
-      console.log('start save...');
+      //console.log('start save...');
       if (mod) {
-        console.log('saving...');
+        //console.log('saving...');
         await saveLocalData(autoSaveKey, JSON.stringify(mod));
       }
-      console.log('end save...');
+      //console.log('end save...');
       autoSaveMod();
     }, autoSaveInterval);
   };

@@ -26,7 +26,7 @@ export default () => {
     // TODO if target is nil, error (must have target)
     const amount = generator.valueToCode(block, 'AMOUNT', Order.ATOMIC) || 1;
 
-    let code =  `room:loseHp(${target},${amount})\n`;
+    let code = `room:loseHp(${target}, ${amount})\n`;
     return code;
   };
   luaGenerator.forBlock['recover_hp'] = function (block, generator) {
@@ -53,7 +53,7 @@ export default () => {
     // TODO if target is nil, error (must have target)
     const amount = generator.valueToCode(block, 'AMOUNT', Order.ATOMIC) || 1;
 
-    let code =  `room:changeMaxHp(${target},${amount})\n`;
+    let code = `room:changeMaxHp(${target},${amount})\n`;
     return code;
   };
 };

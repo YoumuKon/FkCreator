@@ -21,23 +21,28 @@ const damageBlocks = createConfigurableBlock({
   dropdowns: {
     DAMAGE_TYPE: [
       ['普', 'NormalDamage'],
-      ['火', 'ThunderDamage'],
-      ['雷', 'FireDamage'],
+      ['雷', 'ThunderDamage'],
+      ['火', 'FireDamage'],
       ['冰', 'IceDamage']
     ]
   }
 });
 
-const loseHpBlocks = createConfigurableBlock({
+// const loseHpBlocks = createConfigurableBlock({
+const loseHpBlocks = [{
   type: 'lose_hp',
-  message: '令一名角色失去体力\n角色%1 失去值%2',
-  args: [
+  message0: '令 %1 失去 %2 点体力',
+  args0: [
     { type: 'input_value', name: 'TARGET', check: 'Player' },
     { type: 'input_value', name: 'AMOUNT', check: 'Number' }
   ],
   colour: 230,
-  tooltip: '失去体力'
-});
+  tooltip: '失去体力',
+  inputsInline: true,
+  previousStatement: null,
+  nextStatement: null,
+}];
+// });
 
 const recoverBlocks = createConfigurableBlock({
   type: 'recover_hp',
