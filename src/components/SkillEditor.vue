@@ -78,22 +78,22 @@ const updateValue = (value) => {
 };
 const skillTagOptions = [
   { label: '主公技', value: 'Skill.Lord' },
-  { label: '锁定技', value: 'Skill.Compulsory' },
-  { label: '限定技', value: 'Skill.Limited' },
-  { label: '觉醒技', value: 'Skill.Wake' },
-  { label: '转换技', value: 'Skill.Switch' },
-  { label: '使命技', value: 'Skill.Quest' },
-  { label: '持恒技', value: 'Skill.Permanent' },
-  { label: '主将技', value: 'Skill.MainPlace' },
-  { label: '副将技', value: 'Skill.DeputyPlace' },
-  { label: '隐匿技', value: 'Skill.Hidden' },
-  { label: '势力技', value: 'Skill.AttachedKingdom' },
-  { label: '蓄力技', value: 'Skill.Charge' },
-  { label: '宗族技', value: 'Skill.Family' },
-  { label: '连招技', value: 'Skill.Combo' },
-  { label: '韵律技', value: 'Skill.Rhyme' },
-  { label: '奋武技', value: 'Skill.Force' },
-  { label: '昂扬技', value: 'Skill.Spirited' }
+  { label: '锁定技', value: 'Skill.Compulsory' }
+  // { label: '限定技', value: 'Skill.Limited' },
+  // { label: '觉醒技', value: 'Skill.Wake' },
+  // { label: '转换技', value: 'Skill.Switch' },
+  // { label: '使命技', value: 'Skill.Quest' },
+  // { label: '持恒技', value: 'Skill.Permanent' },
+  // { label: '主将技', value: 'Skill.MainPlace' },
+  // { label: '副将技', value: 'Skill.DeputyPlace' },
+  // { label: '隐匿技', value: 'Skill.Hidden' },
+  // { label: '势力技', value: 'Skill.AttachedKingdom' },
+  // { label: '蓄力技', value: 'Skill.Charge' },
+  // { label: '宗族技', value: 'Skill.Family' },
+  // { label: '连招技', value: 'Skill.Combo' },
+  // { label: '韵律技', value: 'Skill.Rhyme' },
+  // { label: '奋武技', value: 'Skill.Force' },
+  // { label: '昂扬技', value: 'Skill.Spirited' }
 ];
 watchEffect(() => {
   updateValue(localValue.value);

@@ -93,7 +93,7 @@ local _skill_val = fk.CreateSkill {
 
 Fk:loadTranslationTable {
   ["${skill.internal_name}"] = "${skill.name}",
-  [":${skill.internal_name}"] = "${skill.description}",
+  [":${skill.internal_name}"] = ${JSON.stringify(skill.description)},
 }\n\n`;
 
   skill.effects.forEach((effect) => {
