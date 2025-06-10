@@ -65,7 +65,7 @@ const modStore = useModStore();
 watchEffect(() => {
   const currentNode = modStore.currentNode;
   if (currentNode) {
-    selectedId.value = currentNode.id;
+    selectedId.value = currentNode.value.id;
   }
 });
 </script>
@@ -104,6 +104,8 @@ ul {
   gap: 0.5rem;
   transition: background-color 0.25s;
   user-select: none;
+  border-top-left-radius: var(--el-border-radius-base);
+  border-bottom-left-radius: var(--el-border-radius-base);
 }
 
 .tree-node:hover {
