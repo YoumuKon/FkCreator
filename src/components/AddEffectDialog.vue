@@ -19,6 +19,9 @@
         <el-form-item label="效果名称" prop="name">
           <el-input v-model="effectRef.name" placeholder="输入效果名称" />
         </el-form-item>
+        <el-form-item label="触发时机" prop="trigger">
+          <el-tree-select v-model="effectRef.timing" :data="timingOptions" filterable style="width: 100%" />
+        </el-form-item>
         <el-form-item label="效果描述" prop="description">
           <el-input type="textarea" v-model="effectRef.description" placeholder="输入效果描述" :rows="4" />
         </el-form-item>
@@ -33,7 +36,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { effectTypes } from '@/utils/effects.js';
+import { effectTypes, timingOptions } from '@/utils/effects.js';
 
 const props = defineProps({
   modelValue: {
@@ -43,6 +46,7 @@ const props = defineProps({
 });
 const effectRef = ref({
   name: '',
+  timing: '',
   description: ''
 });
 const emit = defineEmits(['create', 'update:modelValue']);
@@ -136,5 +140,9 @@ const resetForm = () => {
 .type-info p {
   margin: 0;
   font-size: 0.9rem;
+}
+
+:deep(.el-tree) {
+  min-width: 100% !important;
 }
 </style>

@@ -200,7 +200,6 @@ export const effectTypes = [
     }
   },
 
-
   // ---@class AttackRangeSpec: StatusSkillSpec
   // ---@field public correct_func? fun(self: AttackRangeSkill, from: Player, to: Player): number?
   // ---@field public fixed_func? fun(self: AttackRangeSkill, player: Player): number?  @ 判定角色的锁定攻击范围初值
@@ -399,11 +398,10 @@ export const effectTypes = [
           ],
           ret: 'any',
           blockData: null
-        },
+        }
       ]
     }
   },
-
 
   //   ---@class TargetModSpec: StatusSkillSpec
   // ---@field public bypass_times? fun(self: TargetModSkill, player: Player, skill: ActiveSkill, scope: integer, card?: Card, to?: Player): any  角色使用牌是否无次数限制
@@ -856,7 +854,6 @@ export const effectTypes = [
     }
   },
 
-
   //   ---@class VisibilitySpec: StatusSkillSpec
   // ---@field public card_visible? fun(self: VisibilitySkill, player: Player, card: Card): any @ 判定角色是否可以看到某牌
   // ---@field public role_visible? fun(self: VisibilitySkill, player: Player, target: Player): any @ 判定角色是否可以看到某角色的身份
@@ -927,7 +924,6 @@ export const effectTypes = [
   // ---@field public prompt? string|fun(self: ActiveSkill, player: Player, selected_cards: integer[], selected_targets: Player[]): string @ 提示信息
   // ---@field public interaction? fun(self: ActiveSkill, player: Player): table? @ 选项框
   // ---@field public target_tip? fun(self: ActiveSkill, player: Player, to_select: Player, selected: Player[], selected_cards: integer[], card?: Card, selectable: boolean, extra_data: any): string|TargetTipDataSpec? @ 目标提示
-
 
   {
     id: 'active',
@@ -1175,8 +1171,6 @@ export const effectTypes = [
       ]
     }
   },
-
-
 
   // ---@class CardSkillSpec: UsableSkillSpec
   // ---@field public mod_target_filter? fun(self: ActiveSkill, player: Player, to_select: Player, selected: Player[], card: Card, extra_data: any): any @ 判定目标是否合法（例如不能杀自己，火攻无手牌目标）
@@ -1616,7 +1610,6 @@ export const effectTypes = [
   // ---@field public interaction? fun(self: ViewAsSkill, player: Player): table? @ 选项框
   // ---@field public enabled_at_nullification? fun(self: ViewAsSkill, player: Player, data: CardEffectData): boolean? @ 判断一张牌是否能被此技能转化无懈来响应
 
-
   {
     id: 'viewas',
     name: '转化类',
@@ -1805,11 +1798,13 @@ export const effectTypes = [
               name: 'self',
               message: '本技能',
               type: 'ViewAsSkill'
-            }, {
+            },
+            {
               name: 'player',
               message: '相关角色',
               type: 'Player'
-            }],
+            }
+          ],
           ret: 'table?',
           blockData: null
         },
@@ -1839,6 +1834,14 @@ export const effectTypes = [
         }
       ]
     }
+  },
+  {
+    id: 'trigger',
+    name: '触发类',
+    description: '在某时机触发，须指定唯一时机',
+    template: {
+      methods: []
+    }
   }
 ];
 
@@ -1854,3 +1857,42 @@ export const getTemplateByEffectType = (effectType) => {
   }
   return effect.template;
 };
+
+/**
+ * 时机选项列表
+ * @type {[{value: string, label: string}]}
+ */
+export const timingOptions = [
+  {
+    value: 'hp',
+    label: '体力相关',
+    children: [
+      {
+        value: 'hp_change',
+        label: '体力变化时'
+      },
+      {
+        value: 'hp_lose',
+        label: '失去体力时'
+      },
+      {
+        value: 'hp_recovery',
+        label: '回复体力时'
+      }
+    ]
+  },
+  {
+    value: 'use_card',
+    label: '使用牌相关',
+    children: [
+      {
+        value: 'use_card_when',
+        label: '使用牌时'
+      },
+      {
+        value: 'use_card_after',
+        label: '使用牌后'
+      }
+    ]
+  }
+];

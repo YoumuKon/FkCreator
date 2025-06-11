@@ -69,7 +69,7 @@ const gotoUrl = (url) => {
         </div>
       </div>
       <div class="contribute">
-        <div class="title">参与共享</div>
+        <div class="title">参与贡献</div>
         <div>新月工坊以及新月杀开发团队一直面临着一系列的挑战，并且涉及了多个领域的技术方向。不论你是职业程序员，还是最近才接触编程的新手，抑或是一名普通玩家，都可以为新月杀做出贡献。</div>
         <div class="link" @click="gotoUrl(githubUrl)">github主页</div>
       </div>

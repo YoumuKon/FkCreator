@@ -57,14 +57,16 @@
       <el-form-item label="初始护甲" class="number-input" prop="shield">
         <el-input-number v-model="localValue.shield" :min="0" :max="5" />
       </el-form-item>
-      <el-switch
-        v-model="localValue.hidden"
-        class="mb-2"
-        style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
-        active-text="隐藏武将（只能通过自由选将选择）"
-        inactive-text="正常武将"
-        prop="hidden"
-      />
+      <el-form-item label=" " class="number-input" style="width: 40%" prop="hidden">
+        <el-switch
+          v-model="localValue.hidden"
+          class="mb-2"
+          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+          active-text="隐藏武将（只能通过自由选将选择）"
+          inactive-text="正常武将"
+          prop="hidden"
+        />
+      </el-form-item>
     </el-row>
     <el-form-item label="绑定技能">
       <el-autocomplete v-model="skillSearch" :fetch-suggestions="querySkillSearch" placeholder="请输入技能名称 或 技能内部名称" @select="handleSkillSelect">
@@ -226,6 +228,7 @@ const addCustomSkill = (skillCode) => {
   width: 20%;
   min-width: 120px;
 }
+
 
 .skill-list {
   width: 100%;
