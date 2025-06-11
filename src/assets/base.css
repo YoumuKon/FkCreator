@@ -8,7 +8,7 @@
   --el-component-size: 40px;
   --el-font-size-base: 15px;
   --el-border-radius-base: 8px !important;
-  --el-tag-border-radius: 8px !important;
+  --el-tag-border-radius: 6px !important;
   --el-text-color-regular: #555;
   scrollbar-width: thin;
   scrollbar-color: #888 #f2f2f2;
