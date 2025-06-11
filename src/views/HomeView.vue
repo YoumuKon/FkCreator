@@ -179,6 +179,7 @@ const gotoUrl = (url) => {
   color: white;
   fill: white;
   box-shadow: 0 0 10px rgba(125, 141, 233, 0.7);
+  transform: translateX(3px) translateY(3px);
 }
 
 .intro .button .icon {
