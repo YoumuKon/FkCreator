@@ -19,7 +19,7 @@
         <el-form-item label="效果名称" prop="name">
           <el-input v-model="effectRef.name" placeholder="输入效果名称" />
         </el-form-item>
-        <el-form-item label="触发时机" prop="trigger">
+        <el-form-item label="触发时机" prop="timing" v-if="selectedType === 'trigger'">
           <el-tree-select v-model="effectRef.timing" :data="timingOptions" filterable style="width: 100%" />
         </el-form-item>
         <el-form-item label="效果描述" prop="description">
@@ -55,6 +55,7 @@ const selectType = (type) => {
   selectedType.value = type.id;
   // 设置默认名称
   effectRef.value.name = `${type.name}效果_${new Date().getTime().toString().slice(-4)}`;
+  effectRef.value.timing = '';
 };
 const close = () => {
   emit('update:modelValue', false);
