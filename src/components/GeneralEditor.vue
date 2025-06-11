@@ -61,7 +61,7 @@
         <el-switch
           v-model="localValue.hidden"
           class="mb-2"
-          style="--el-switch-on-color: #13ce66; --el-switch-off-color: #ff4949"
+          style="--el-switch-on-color: #ff4949; --el-switch-off-color: #13ce66"
           active-text="隐藏武将（只能通过自由选将选择）"
           inactive-text="正常武将"
           prop="hidden"
