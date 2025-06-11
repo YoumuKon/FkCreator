@@ -77,7 +77,7 @@ const resetForm = () => {
 
 <style scoped>
 .effect-config {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .effect-type-selector h4,
@@ -115,6 +115,7 @@ const resetForm = () => {
   padding: 16px;
   cursor: pointer;
   transition: all 0.2s;
+  user-select: none;
 }
 
 .effect-type-card:hover {
