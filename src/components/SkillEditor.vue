@@ -24,7 +24,7 @@
       <el-input type="textarea" :rows="4" v-model="localValue.description" placeholder="这是一个刚创建的技能，请添加相关信息"></el-input>
     </el-form-item>
     <el-form-item label="技能标签" prop="tags">
-      <el-select v-model="localValue.tags" multiple placeholder="请选择技能标签（可多选）" style="width: 100%">
+      <el-select v-model="localValue.tags" multiple placeholder="请选择技能标签（可多选）" style="width: 100%" tag-type="warning">
         <el-option v-for="item in skillTagOptions" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-form-item>
