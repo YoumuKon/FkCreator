@@ -307,6 +307,5 @@ export default [
     output: 'Boolean',
     inputsInline: true,
   },
-
   // 未完待续...
 ];
